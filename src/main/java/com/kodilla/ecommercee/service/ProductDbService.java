@@ -1,3 +1,5 @@
 package com.kodilla.ecommercee.service;
 
-public class ProductDbService { }
+public class ProductDbService {
+
+}
