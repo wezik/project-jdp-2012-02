@@ -1,4 +1,4 @@
 package com.kodilla.ecommercee.exceptions;
 
-public class ProductNotFoundException extends RuntimeException {
+public class ProductNotFoundException extends Exception {
 }
