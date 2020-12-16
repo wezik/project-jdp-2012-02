@@ -1,10 +1,7 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.ProductDto;
 import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
-import com.kodilla.ecommercee.mapper.ProductMapper;
-import com.kodilla.ecommercee.service.ProductDbService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +24,7 @@ public class ProductController {
 
     @GetMapping(value = "getTargetProduct")
     public ProductDto getTargetProduct(@RequestParam Long productId) throws ProductNotFoundException {
+        System.out.println("Looking for product with id: " + productId);
         return new ProductDto("Test product");
     }
 
@@ -37,6 +35,7 @@ public class ProductController {
 
     @PutMapping(value = "updateProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ProductDto updateProduct(@RequestBody ProductDto productDto) {
+        System.out.println("Updating product: " + productDto);
         return new ProductDto("Updated test product");
     }
 
