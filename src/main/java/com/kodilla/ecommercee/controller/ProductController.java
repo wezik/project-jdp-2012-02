@@ -17,8 +17,6 @@ import java.util.List;
 @RequestMapping("/product")
 @RequiredArgsConstructor
 public class ProductController {
-    private final ProductDbService productDbService;
-    private final ProductMapper productMapper;
 
     @GetMapping(value = "getProducts")
     public List<ProductDto> getProducts() {
@@ -34,8 +32,7 @@ public class ProductController {
 
     @PostMapping(value = "createProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void createProduct(@RequestBody ProductDto productDto) {
-        Product product = productMapper.mapToProduct(productDto);
-        productDbService.saveProduct(product);
+        System.out.println("Creating product: " + productDto);
     }
 
     @PutMapping(value = "updateProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -45,6 +42,6 @@ public class ProductController {
 
     @DeleteMapping(value = "deleteProduct")
     public void deleteProduct(@RequestParam Long productId) {
-        productDbService.deleteProduct(productId);
+        System.out.println("Deleting product with id: " + productId);
     }
 }
