@@ -18,14 +18,14 @@ public class ProductController {
     @GetMapping(value = "getProducts")
     public List<ProductDto> getProducts() {
         List<ProductDto> products = new ArrayList<>();
-        products.add(new ProductDto("Test product"));
+        products.add(new ProductDto(1L,"Test product"));
         return products;
     }
 
     @GetMapping(value = "getTargetProduct")
     public ProductDto getTargetProduct(@RequestParam Long productId) throws ProductNotFoundException {
         System.out.println("Looking for product with id: " + productId);
-        return new ProductDto("Test product");
+        return new ProductDto(1L, "Test product");
     }
 
     @PostMapping(value = "createProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -36,7 +36,7 @@ public class ProductController {
     @PutMapping(value = "updateProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ProductDto updateProduct(@RequestBody ProductDto productDto) {
         System.out.println("Updating product: " + productDto);
-        return new ProductDto("Updated test product");
+        return new ProductDto(1L, "Updated test product");
     }
 
     @DeleteMapping(value = "deleteProduct")
