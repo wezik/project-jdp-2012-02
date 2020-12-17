@@ -9,7 +9,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/cart")
+@RequestMapping("v1/cart")
 public class CartController {
 
     @PostMapping(value = "createCart")
@@ -17,8 +17,8 @@ public class CartController {
         System.out.println("Creating empty cart");
     }
 
-    @GetMapping(value = "getProductList")
-    public List<ProductDto> getProductList(@RequestParam Long cartId) {
+    @GetMapping(value = "getProductList/{cartId}")
+    public List<ProductDto> getProductList(@PathVariable Long cartId) {
         List<ProductDto> products = new ArrayList<>();
         products.add(new ProductDto(cartId, "test product"));
         return products;
