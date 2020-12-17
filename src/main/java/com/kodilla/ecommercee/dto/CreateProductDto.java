@@ -3,7 +3,6 @@ package com.kodilla.ecommercee.dto;
 import lombok.Value;
 
 @Value
-public class GroupDto {
-    Long groupId;
-    String groupName;
+public class CreateProductDto {
+    private String name;
 }
