@@ -1,9 +1,7 @@
 package com.kodilla.ecommercee.dto;
 
-import lombok.Getter;
 import lombok.Value;
 
-@Getter
 @Value
 public class UserDto {
 
