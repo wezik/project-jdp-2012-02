@@ -25,7 +25,6 @@ public class SpringBootJPAIntegrationTest {
                 .save(new GenericEntity("test"));
         Optional<GenericEntity> foundEntity = genericEntityRepository
                 .findById(genericEntity.getId());
-        System.out.println(foundEntity.get().getId());
 
         assertTrue(foundEntity.isPresent());
         assertEquals(genericEntity.getValue(), foundEntity.get().getValue());
