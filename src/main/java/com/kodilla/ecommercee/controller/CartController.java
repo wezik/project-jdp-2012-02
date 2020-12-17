@@ -21,7 +21,7 @@ public class CartController {
     public List<ProductDto> getProductList(@RequestParam Long cartId) {
         List<ProductDto> products = new ArrayList<>();
         products.add(new ProductDto(cartId, "test product"));
-        return new ArrayList<>();
+        return products;
     }
 
     @PostMapping(value = "addProduct")
