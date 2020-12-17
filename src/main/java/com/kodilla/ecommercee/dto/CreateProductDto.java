@@ -1,9 +1,8 @@
 package com.kodilla.ecommercee.dto;
 
-import lombok.*;
+import lombok.Value;
 
 @Value
-public class ProductDto {
-    private Long id;
+public class CreateProductDto {
     private String name;
 }
