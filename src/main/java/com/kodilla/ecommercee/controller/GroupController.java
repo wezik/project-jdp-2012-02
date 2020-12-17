@@ -21,8 +21,8 @@ public class GroupController {
         return Arrays.asList(groups);
     }
 
-    @GetMapping(value = "getGroup")
-    public GroupDto getGroup(@RequestParam Long id) {
+    @GetMapping(value = "getGroup/{id}")
+    public GroupDto getGroup(@PathVariable Long id) {
         return new GroupDto(5L,"getGroup Test");
     }
 

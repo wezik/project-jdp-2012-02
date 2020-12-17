@@ -1,11 +1,9 @@
 package com.kodilla.ecommercee.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Value;
 
-@AllArgsConstructor
-@Getter
+@Value
 public class GroupDto {
-    private final Long groupId;
-    private final String groupName;
+    Long groupId;
+    String groupName;
 }
