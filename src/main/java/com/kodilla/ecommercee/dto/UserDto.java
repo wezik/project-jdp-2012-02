@@ -1,10 +1,10 @@
 package com.kodilla.ecommercee.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Value;
 
 @Getter
-@AllArgsConstructor
+@Value
 public class UserDto {
 
     private Long id;
