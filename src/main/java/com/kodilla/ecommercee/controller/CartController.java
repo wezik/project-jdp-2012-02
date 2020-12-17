@@ -24,18 +24,18 @@ public class CartController {
         return products;
     }
 
-    @PostMapping(value = "addProduct")
-    public void addProduct(@RequestParam Long productId) {
+    @PostMapping(value = "addProduct/{productId}")
+    public void addProduct(@PathVariable Long productId) {
         System.out.println("Adding product with id: " + productId);
     }
 
-    @DeleteMapping(value = "deleteProduct")
-    public void deleteProduct(@RequestParam Long productId) {
+    @DeleteMapping(value = "deleteProduct/{productId}")
+    public void deleteProduct(@PathVariable Long productId) {
         System.out.println("Deleting product with id: " + productId);
     }
 
-    @PostMapping(value = "createOrder")
-    public void createOrder(@RequestParam Long cartId) {
+    @PostMapping(value = "createOrder/{cartId}")
+    public void createOrder(@PathVariable Long cartId) {
         System.out.println("Creating new order, based on cart with id: " + cartId);
     }
 
