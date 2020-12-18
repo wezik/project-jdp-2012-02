@@ -1,9 +1,20 @@
 package com.kodilla.ecommercee.dto;
 
+import com.kodilla.ecommercee.domain.Cart;
+import com.kodilla.ecommercee.domain.Group;
 import lombok.*;
+import lombok.experimental.FieldDefaults;
+
+import java.math.BigDecimal;
+import java.util.List;
 
 @Value
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductDto {
-    private Long id;
-    private String name;
+    Long id;
+    String name;
+    String description;
+    BigDecimal price;
+    Group groupId;
+    List<Cart> cartsWhichContainsThisProduct;
 }
