@@ -5,19 +5,20 @@ import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
 @RequiredArgsConstructor
+@NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "GROUPS_LIST")
 public class Group {
 
     @Id
-    @NotNull
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @NotNull
+    @NonNull
     @Column(name = "GROUP_ID", unique = true)
     Long id;
 
@@ -31,5 +32,5 @@ public class Group {
             mappedBy = "groupId",
             fetch = FetchType.EAGER
     )
-    List<Product> productList;
+    List<Product> productList = new ArrayList<>();
 }

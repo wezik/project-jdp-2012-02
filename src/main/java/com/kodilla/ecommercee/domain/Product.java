@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -23,17 +23,14 @@ public class Product {
     @Column(name = "PRODUCT_ID", unique = true)
     Long id;
 
-    @NonNull
     @NotNull
     @Column(name = "NAME")
     String name;
 
-    @NonNull
     @NotNull
     @Column(name = "DESCRIPTION")
     String description;
 
-    @NonNull
     @NotNull
     @Column(name = "PRICE")
     BigDecimal price;
