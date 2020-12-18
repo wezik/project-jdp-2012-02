@@ -12,7 +12,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/product")
+@RequestMapping("v1/product")
 @RequiredArgsConstructor
 public class ProductController {
 
@@ -23,8 +23,8 @@ public class ProductController {
         return products;
     }
 
-    @GetMapping(value = "getProduct")
-    public ProductDto getProduct(@RequestParam Long productId) throws ProductNotFoundException {
+    @GetMapping(value = "getProduct/{productId}")
+    public ProductDto getProduct(@PathVariable Long productId) throws ProductNotFoundException {
         System.out.println("Looking for product with id: " + productId);
         return new ProductDto(1L, "Test product");
     }
@@ -40,8 +40,8 @@ public class ProductController {
         return new ProductDto(1L, "Updated test product");
     }
 
-    @DeleteMapping(value = "deleteProduct")
-    public void deleteProduct(@RequestParam Long productId) {
+    @DeleteMapping(value = "deleteProduct/{productId}")
+    public void deleteProduct(@PathVariable Long productId) {
         System.out.println("Deleting product with id: " + productId);
     }
 }
