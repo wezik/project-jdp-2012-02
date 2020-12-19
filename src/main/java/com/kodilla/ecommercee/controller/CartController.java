@@ -1,7 +1,6 @@
 package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.ProductDto;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -20,7 +19,6 @@ public class CartController {
     @GetMapping(value = "getProductList/{cartId}")
     public List<ProductDto> getProductList(@PathVariable Long cartId) {
         List<ProductDto> products = new ArrayList<>();
-        products.add(new ProductDto(cartId, "test product"));
         return products;
     }
 
