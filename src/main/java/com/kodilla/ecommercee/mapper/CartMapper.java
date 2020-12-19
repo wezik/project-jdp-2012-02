@@ -11,7 +11,7 @@ public class CartMapper {
     @Autowired
     ProductMapper productMapper;
 
-    public Cart mapToCart(final CartDto cartDto) {
+    public Cart mapToCart() {
         return new Cart();
     }
 

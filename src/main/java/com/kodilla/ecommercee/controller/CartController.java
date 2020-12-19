@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.ProductDto;
 import com.kodilla.ecommercee.mapper.CartMapper;
+import com.kodilla.ecommercee.service.CartDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,11 +16,13 @@ public class CartController {
 
     @Autowired
     private CartMapper mapper;
+    @Autowired
+    private CartDbService service;
 
 
     @PostMapping(value = "createCart")
     public void createCart() {
-        System.out.println("Creating empty cart");
+        service.createCart(mapper.mapToCart());
     }
 
     @GetMapping(value = "getProductList/{cartId}")
