@@ -1,18 +1,14 @@
 package com.kodilla.ecommercee.domain;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Getter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "orders")
 public class Order {
 
@@ -28,7 +24,7 @@ public class Order {
 
     @NotNull
     @Column(name = "STATUS")
-    private String status = "pending";
+    private String status ;
 
     @NotNull
     @Column(name = "DATETIME")
@@ -38,4 +34,9 @@ public class Order {
     @Column(name = "SHIPPINGADDRESS")
     private String shippingAddress;
 
+
+    public void setDateTime(LocalDateTime now) {
+    }
 }
+
+
