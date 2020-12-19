@@ -37,11 +37,6 @@ public class Product {
     @JoinColumn(name = "GROUP_ID")
     Group group;
 
-    @ManyToMany
-    @JoinTable(
-            name = "PRODUCTS_IN_CARTS",
-            joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "CART_ID")}
-    )
+    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "productList")
     List<Cart> cartsWhichContainsThisProduct = new ArrayList<>();
 }

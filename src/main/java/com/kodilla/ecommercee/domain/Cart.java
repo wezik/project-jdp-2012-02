@@ -19,7 +19,12 @@ public class Cart {
     @Column(name = "CART_ID", unique = true)
     Long id;
 
-    @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "cartsWhichContainsThisProduct")
+    @ManyToMany(cascade = CascadeType.MERGE)
+    @JoinTable(
+            name = "PRODUCTS_IN_CARTS",
+            joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "CART_ID")},
+            inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")}
+    )
     List<Product> productList = new ArrayList<>();
 
 }

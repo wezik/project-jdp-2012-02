@@ -3,6 +3,7 @@ package com.kodilla.ecommercee.mapper;
 import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.ProductDto;
+import com.kodilla.ecommercee.dto.ProductListDto;
 import com.kodilla.ecommercee.service.GroupDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,16 @@ public class ProductMapper {
         );
     }
 
+    public ProductListDto mapToProductListDto (final Product product) {
+        return new ProductListDto(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getPrice(),
+                product.getGroup().getId()
+        );
+    }
+
     public Product mapToProduct(final ProductDto productDto) {
 
         Optional<Group> assignedGroup = groupDbService.getGroup(productDto.getGroupId());
@@ -41,9 +52,9 @@ public class ProductMapper {
         );
     }
 
-    public List<ProductDto> mapToProductDtoList(final List<Product> products) {
+    public List<ProductListDto> mapProductListToProductDtoList(final List<Product> products) {
         return products.stream()
-                .map(this::mapToProductDto)
+                .map(this::mapToProductListDto)
                 .collect(Collectors.toList());
     }
 }

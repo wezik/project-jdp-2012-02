@@ -4,11 +4,14 @@ import lombok.AccessLevel;
 import lombok.Value;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
+import java.math.BigDecimal;
 
 @Value
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartDto {
+public class ProductListDto {
     Long id;
-    List<ProductListDto> productList;
+    String name;
+    String description;
+    BigDecimal price;
+    Long groupId;
 }

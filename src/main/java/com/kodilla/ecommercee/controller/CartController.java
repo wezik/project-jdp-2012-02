@@ -1,12 +1,12 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.ProductDto;
+import com.kodilla.ecommercee.dto.ProductListDto;
 import com.kodilla.ecommercee.mapper.CartMapper;
 import com.kodilla.ecommercee.service.CartDbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -25,10 +25,10 @@ public class CartController {
         service.createCart(mapper.mapToCart());
     }
 
-    @GetMapping(value = "getProductList/{cartId}")
-    public List<ProductDto> getProductList(@PathVariable Long cartId) {
-        List<ProductDto> products = new ArrayList<>();
-        return products;
+    @GetMapping(value = "getProducts/{cartId}")
+    public List<ProductListDto> getProducts(@PathVariable Long cartId) {
+        List<Product> products = service.getProducts(cartId);
+        return mapper.mapToProductListDto(products);
     }
 
     @PostMapping(value = "addProduct/{productId}")

@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.ProductDto;
+import com.kodilla.ecommercee.dto.ProductListDto;
 import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
 import com.kodilla.ecommercee.mapper.ProductMapper;
 import com.kodilla.ecommercee.service.ProductDbService;
@@ -23,8 +24,8 @@ public class ProductController {
     private ProductMapper mapper;
 
     @GetMapping(value = "getProducts")
-    public List<ProductDto> getProducts() {
-        return mapper.mapToProductDtoList(service.getProducts());
+    public List<ProductListDto> getProducts() {
+        return mapper.mapProductListToProductDtoList(service.getProducts());
     }
 
     @GetMapping(value = "getProduct/{productId}")
