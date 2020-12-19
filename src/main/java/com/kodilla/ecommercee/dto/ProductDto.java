@@ -15,6 +15,6 @@ public class ProductDto {
     String name;
     String description;
     BigDecimal price;
-    Group groupId;
+    String groupName;
     List<Cart> cartsWhichContainsThisProduct;
 }

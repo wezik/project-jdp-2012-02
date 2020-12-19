@@ -12,7 +12,7 @@ import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
+@Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "PRODUCTS")
 public class Product {
@@ -37,7 +37,7 @@ public class Product {
 
     @ManyToOne
     @JoinColumn(name = "GROUP_ID")
-    Group groupId;
+    Group group;
 
     @ManyToMany
     @JoinTable(
@@ -46,8 +46,4 @@ public class Product {
             inverseJoinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "CART_ID")}
     )
     List<Cart> cartsWhichContainsThisProduct = new ArrayList<>();
-
-    public void setGroupId(Group groupId) {
-        this.groupId = groupId;
-    }
 }

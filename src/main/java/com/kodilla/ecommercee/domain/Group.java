@@ -18,7 +18,6 @@ public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
-    @NonNull
     @Column(name = "GROUP_ID", unique = true)
     Long id;
 
@@ -29,7 +28,7 @@ public class Group {
 
     @OneToMany(
             targetEntity = Product.class,
-            mappedBy = "groupId",
+            mappedBy = "group",
             fetch = FetchType.EAGER
     )
     List<Product> productList = new ArrayList<>();
