@@ -20,8 +20,7 @@ public class ProductDbService {
     }
 
     public Product getProduct(Long productId) throws ProductNotFoundException {
-        Optional<Product> product = Optional.ofNullable(repository.findById(productId).orElseThrow(ProductNotFoundException::new));
-        return product.get();
+        return repository.findById(productId).orElseThrow(ProductNotFoundException::new);
     }
 
     public Product saveProduct(Product product) {

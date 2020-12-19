@@ -18,10 +18,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProductController {
 
-    @Autowired
-    private ProductDbService service;
-    @Autowired
-    private ProductMapper mapper;
+    private final ProductDbService service;
+    private final ProductMapper mapper;
 
     @GetMapping(value = "getProducts")
     public List<ProductListDto> getProducts() {
