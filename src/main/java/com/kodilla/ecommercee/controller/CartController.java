@@ -1,6 +1,8 @@
 package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.dto.ProductDto;
+import com.kodilla.ecommercee.mapper.CartMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -10,6 +12,10 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("v1/cart")
 public class CartController {
+
+    @Autowired
+    private CartMapper mapper;
+
 
     @PostMapping(value = "createCart")
     public void createCart() {
