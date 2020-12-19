@@ -1,25 +1,27 @@
 package com.kodilla.ecommercee.controller;
 
+import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.exceptions.OrderNotFoundException;
 import com.kodilla.ecommercee.mapper.OrderMapper;
 import com.kodilla.ecommercee.service.OrderDbService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import java.util.ArrayList;
-import java.util.List;
 
+import java.time.LocalDateTime;
+import java.util.List;
 
 @RestController
 @RequestMapping("/v1/order")
 @CrossOrigin(origins = "*")
-@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderMapper orderMapper;
     private final OrderDbService orderDbService;
 
-    public OrderController() {
+    public OrderController(OrderMapper orderMapper, OrderDbService orderDbService) {
+        this.orderMapper = orderMapper;
+        this.orderDbService = orderDbService;
     }
 
 
@@ -32,25 +34,27 @@ public class OrderController {
 
     @GetMapping(value = "getOrders")
     public List<OrderDto> getOrders(){
-        List<OrderDto> orders = new ArrayList<>();
-        orders.add(new OrderDto(1L,111.99));
-        orders.add(new OrderDto(2L, 49.99));
-        return orders;
+        List<Order> orders = orderDbService.getAllOrders();
+        return orderMapper.mapToOrderDtoList(orders);
     }
 
-    @PostMapping(value = "addOrder" )
-    public OrderDto addOrder(@RequestBody OrderDto orderDto){
-        return orderDto;
+    @PostMapping(value = "addOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public void addOrder(@RequestBody OrderDto orderDto){
+        Order order = orderMapper.mapToOrder(orderDto);
+        order.setDateTime(LocalDateTime.now());
+        orderDbService.saveOrder(order);
     }
 
     @PutMapping(value = "updateOrder")
     public OrderDto updateOrder(@RequestBody OrderDto orderDto){
-        return orderDto;
+        Order order = orderMapper.mapToOrder(orderDto);
+        Order savedOrder = orderDbService.saveOrder(order);
+        return orderMapper.mapToOrderDto(savedOrder);
     }
 
     @DeleteMapping(value = "deleteOrder/{id}")
-    public boolean deleteOrder(@PathVariable Long id){
-        return false;
+    public void deleteOrder(@PathVariable Long id){
+        orderDbService.deleteOrderById(id);
     }
 
 }
