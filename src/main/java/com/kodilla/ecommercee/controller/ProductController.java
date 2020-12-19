@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
 import java.util.List;
 
 @RestController
@@ -34,8 +33,9 @@ public class ProductController {
     }
 
     @PostMapping(value = "createProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createProduct(@RequestBody ProductDto productDto) {
-        service.saveProduct(mapper.mapToProduct(productDto));
+    public ProductDto createProduct(@RequestBody ProductDto productDto) {
+        Product newProduct = service.saveProduct(mapper.mapToProduct(productDto));
+        return mapper.mapToProductDto(newProduct);
     }
 
     @PutMapping(value = "updateProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
