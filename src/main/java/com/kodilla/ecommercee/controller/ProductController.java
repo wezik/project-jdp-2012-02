@@ -34,8 +34,9 @@ public class ProductController {
     }
 
     @PostMapping(value = "createProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createProduct(@RequestBody ProductDto productDto) {
-        service.saveProduct(mapper.mapToProduct(productDto));
+    public ProductDto createProduct(@RequestBody ProductDto productDto) {
+        Product newProduct = service.saveProduct(mapper.mapToProduct(productDto));
+        return mapper.mapToProductDto(newProduct);
     }
 
     @PutMapping(value = "updateProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
