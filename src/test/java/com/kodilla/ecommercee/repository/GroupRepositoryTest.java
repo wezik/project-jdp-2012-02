@@ -22,7 +22,7 @@ public class GroupRepositoryTest {
     @Test
     public void givenGroupRepository_whenSaveAndRetrieveGroup_thenOK() {
         //Given
-        Group group = groupRepository.save(new Group(1L,"test"));
+        Group group = groupRepository.save(new Group("test"));
 
         //When
         Optional<Group> foundGroup = groupRepository.findById(group.getId());

@@ -10,7 +10,7 @@ import java.util.stream.Collectors;
 @Service
 public class GroupMapper {
     public Group mapToGroup(GroupDto groupDto) {
-        return new Group(groupDto.getGroupId(),groupDto.getGroupName());
+        return new Group(groupDto.getGroupName());
     }
 
     public GroupDto mapToGroupDto(Group group) {
