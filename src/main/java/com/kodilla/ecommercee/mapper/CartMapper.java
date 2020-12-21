@@ -3,18 +3,20 @@ package com.kodilla.ecommercee.mapper;
 import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.CartDto;
-import com.kodilla.ecommercee.dto.ProductDto;
 import com.kodilla.ecommercee.dto.ProductListDto;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartMapper {
 
-    @Autowired
-    ProductMapper productMapper;
+    final ProductMapper productMapper;
 
     public Cart mapToCart() {
         return new Cart();

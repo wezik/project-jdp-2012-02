@@ -11,6 +11,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,40 +34,43 @@ public class EcommerceeApplicationTests {
     @Test
     public void testyEncji() {
 
-//        List<Cart> list = new ArrayList<>();
-//
-//        Cart cart1 = new Cart();
-//        cartRepository.save(cart1);
-//
-//        Group group = new Group("Group1");
-//        groupRepository.save(group);
-//        Group createdGroup = groupRepository.findAll().get(0);
-//
-//        Product product1 = new Product(1L, "name", "description", new BigDecimal(1), createdGroup, list);
-//        Product product2 = new Product(2L, "name1", "description1", new BigDecimal(5), createdGroup, list);
-//        Product product3 = new Product(3L, "name2", "description2", new BigDecimal(10), createdGroup, list);
-//
-//        productRepository.save(product1);
-//        productRepository.save(product2);
-//        productRepository.save(product3);
+        Cart cart1 = new Cart();
+        cartRepository.save(cart1);
+        Cart cart1Extracted = cartRepository.findById(cart1.getId()).get();
+        System.out.println(cart1Extracted);
+        Cart cart2 = new Cart();
+        cartRepository.save(cart2);
+        Cart cart2Extracted = cartRepository.findById(cart2.getId()).get();
 
-//        product1.getCartsWhichContainsThisProduct().add(cart1);
-//        product2.getCartsWhichContainsThisProduct().add(cart1);
-//        product3.getCartsWhichContainsThisProduct().add(cart1);
+        Group owoce = new Group("Owoce");
+        groupRepository.save(owoce);
+        Group owoceExtracted = groupRepository.findById(owoce.getId()).get();
+        Group rtv = new Group("RTV");
+        groupRepository.save(rtv);
+        Group rtvExtracted = groupRepository.findById(rtv.getId()).get();
 
-        Cart cart = cartRepository.findById(162L).get();
-        List<Product> products = productRepository.findAll();
-        cart.getProductList().addAll(products);
-        cartRepository.save(cart);
+        Product apple = new Product("Jabłko", "bio jabłko", new BigDecimal(10), owoceExtracted);
+        Product orange = new Product("Pomarańcza", "bio pomarńcza", new BigDecimal(50), owoceExtracted);
+        Product tv = new Product("Telewizor", "65 cali", new BigDecimal(4000), rtvExtracted);
+        Product computer = new Product("Komputer", "komputer przenośny", new BigDecimal(5000), rtvExtracted);
 
-//        cart1.getProductList().add(product1);
-//        cart1.getProductList().add(product2);
-//        cart1.getProductList().add(product3);
+        productRepository.save(apple);
+        Long appleId = apple.getId();
+        System.out.println(appleId);
+        productRepository.save(orange);
+        Long orangeId = orange.getId();
+        productRepository.save(tv);
+        Long tvId = tv.getId();
+        productRepository.save(computer);
+        Long computerId = computer.getId();
 
-//        productRepository.save(product1);
-//        productRepository.save(product2);
-//        productRepository.save(product3);
-//        cartRepository.save(cart1);
+        cart1Extracted.getProductList().add(productRepository.findById(appleId).get());
+        cart1Extracted.getProductList().add(productRepository.findById(orangeId).get());
+        cart2Extracted.getProductList().add(productRepository.findById(tvId).get());
+        cart2Extracted.getProductList().add(productRepository.findById(computerId).get());
+
+        cartRepository.save(cart1Extracted);
+        cartRepository.save(cart2Extracted);
 
     }
 

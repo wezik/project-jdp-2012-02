@@ -19,7 +19,7 @@ public class Cart {
     @Column(name = "CART_ID", unique = true)
     Long id;
 
-    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
     @JoinTable(
             name = "PRODUCTS_IN_CARTS",
             joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "CART_ID")},
