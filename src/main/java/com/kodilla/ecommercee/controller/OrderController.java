@@ -5,6 +5,7 @@ import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.exceptions.OrderNotFoundException;
 import com.kodilla.ecommercee.mapper.OrderMapper;
 import com.kodilla.ecommercee.service.OrderDbService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -14,15 +15,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/order")
 @CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class OrderController {
 
     private final OrderMapper orderMapper;
     private final OrderDbService orderDbService;
-
-    public OrderController(OrderMapper orderMapper, OrderDbService orderDbService) {
-        this.orderMapper = orderMapper;
-        this.orderDbService = orderDbService;
-    }
 
 
     @GetMapping(value = "getOrder/{id}")
@@ -41,7 +38,6 @@ public class OrderController {
     @PostMapping(value = "addOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addOrder(@RequestBody OrderDto orderDto){
         Order order = orderMapper.mapToOrder(orderDto);
-        order.setDateTime(LocalDateTime.now());
         orderDbService.saveOrder(order);
     }
 
