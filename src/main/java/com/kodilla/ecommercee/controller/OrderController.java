@@ -22,10 +22,11 @@ public class OrderController {
     private final OrderDbService orderDbService;
 
 
+
     @GetMapping(value = "getOrder/{id}")
     public OrderDto getOrder(@PathVariable Long id ) throws OrderNotFoundException {
         return orderMapper.mapToOrderDto(
-                orderDbService.getOrder(id).orElseThrow(OrderNotFoundException::new)
+        orderDbService.getOrder(id).orElseThrow(OrderNotFoundException::new)
         );
     }
 

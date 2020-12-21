@@ -1,47 +1,49 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.dto.CreateProductDto;
+import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.ProductDto;
 import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
+import com.kodilla.ecommercee.mapper.ProductMapper;
+import com.kodilla.ecommercee.service.ProductDbService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "*")
-@RequestMapping("/product")
+@RequestMapping("v1/product")
 @RequiredArgsConstructor
 public class ProductController {
 
+    private final ProductDbService service;
+    private final ProductMapper mapper;
+
     @GetMapping(value = "getProducts")
     public List<ProductDto> getProducts() {
-        List<ProductDto> products = new ArrayList<>();
-        products.add(new ProductDto(1L,"Test product"));
-        return products;
+        return mapper.mapToProductDtoList(service.getProducts());
     }
 
-    @GetMapping(value = "getProduct")
-    public ProductDto getProduct(@RequestParam Long productId) throws ProductNotFoundException {
-        System.out.println("Looking for product with id: " + productId);
-        return new ProductDto(1L, "Test product");
+    @GetMapping(value = "getProduct/{productId}")
+    public ProductDto getProduct(@PathVariable Long productId) throws ProductNotFoundException {
+        return mapper.mapToProductDto(service.getProduct(productId));
     }
 
     @PostMapping(value = "createProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public void createProduct(@RequestBody CreateProductDto createProduct) {
-        System.out.println("Creating product: " + createProduct);
+    public ProductDto createProduct(@RequestBody ProductDto productDto) {
+        Product newProduct = service.saveProduct(mapper.mapToProduct(productDto));
+        return mapper.mapToProductDto(newProduct);
     }
 
     @PutMapping(value = "updateProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ProductDto updateProduct(@RequestBody ProductDto productDto) {
-        System.out.println("Updating product: " + productDto);
-        return new ProductDto(1L, "Updated test product");
+        Product updatedProduct = service.saveProduct(mapper.mapToProduct(productDto));
+        return mapper.mapToProductDto(updatedProduct);
     }
 
-    @DeleteMapping(value = "deleteProduct")
-    public void deleteProduct(@RequestParam Long productId) {
-        System.out.println("Deleting product with id: " + productId);
+    @DeleteMapping(value = "deleteProduct/{productId}")
+    public void deleteProduct(@PathVariable Long productId) {
+        service.deleteProduct(productId);
     }
 }
