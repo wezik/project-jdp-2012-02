@@ -1,34 +1,37 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.domain.Product;
-import com.kodilla.ecommercee.dto.ProductDto;
-import com.kodilla.ecommercee.dto.ProductListDto;
+import com.kodilla.ecommercee.domain.CartProduct;
+import com.kodilla.ecommercee.dto.CartProductDto;
 import com.kodilla.ecommercee.mapper.CartMapper;
+import com.kodilla.ecommercee.mapper.CartProductMapper;
 import com.kodilla.ecommercee.service.CartDbService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("v1/cart")
 public class CartController {
 
-    @Autowired
-    private CartMapper mapper;
-    @Autowired
-    private CartDbService service;
+    final CartMapper cartMapper;
+    final CartProductMapper cartProductMapper;
+    final CartDbService service;
 
 
     @PostMapping(value = "createCart")
     public void createCart() {
-        service.createCart(mapper.mapToCart());
+        service.createCart(cartMapper.mapToCart());
     }
 
     @GetMapping(value = "getProducts/{cartId}")
-    public List<ProductListDto> getProducts(@PathVariable Long cartId) {
-        List<Product> products = service.getProducts(cartId);
-        return mapper.mapToProductListDto(products);
+    public List<CartProductDto> getProducts(@PathVariable Long cartId) {
+        List<CartProduct> products = service.getProducts(cartId);
+        return cartProductMapper.mapToCartProductDtoList(products);
     }
 
     @PostMapping(value = "addProduct/{productId}")

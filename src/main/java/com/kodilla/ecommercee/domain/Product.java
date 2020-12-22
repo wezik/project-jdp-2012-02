@@ -2,6 +2,8 @@ package com.kodilla.ecommercee.domain;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,7 +11,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -18,31 +20,43 @@ public class Product {
 
     @Id
     @NotNull
+    @NonNull
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "PRODUCT_ID", unique = true)
+    @Column(name = "ID", unique = true)
     Long id;
 
     @NotNull
+    @NonNull
     @Column(name = "NAME")
     String name;
 
     @NotNull
+    @NonNull
     @Column(name = "DESCRIPTION")
     String description;
 
     @NotNull
+    @NonNull
     @Column(name = "PRICE")
     BigDecimal price;
 
+    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "GROUP_ID")
     Group group;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "productList")
-    List<Cart> cartsWhichContainsThisProduct = new ArrayList<>();
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany
+    @JoinTable(
+            name = "CARTPRODUCT_JOIN_PRODUCT",
+            joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "CART_PRODUCT_ID", referencedColumnName = "ID")}
+    )
+    List<CartProduct> cartProductsWhichContainsThisProduct = new ArrayList<>();
 
-    //konstruktor bez ID i listy koszyków dla ułatwienia testów
-    public Product(@NotNull @NonNull String name, @NotNull @NonNull String description, @NotNull @NonNull BigDecimal price, @NonNull Group group) {
+    //DODATKOWY KONSTRUKTOR BEZ POLA ID DLA TESTÓW
+    public Product(@NotNull @NonNull String name, @NotNull @NonNull String description, @NotNull @NonNull BigDecimal price, @NonNull @NotNull Group group) {
         this.name = name;
         this.description = description;
         this.price = price;

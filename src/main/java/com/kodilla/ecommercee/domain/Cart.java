@@ -2,6 +2,8 @@ package com.kodilla.ecommercee.domain;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -16,15 +18,16 @@ public class Cart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "CART_ID", unique = true)
+    @Column(name = "ID", unique = true)
     Long id;
 
-    @ManyToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER)
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany
     @JoinTable(
-            name = "PRODUCTS_IN_CARTS",
-            joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "CART_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")}
+            name = "CARTS_JOIN_CARTPRODUCT",
+            joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "CART_PRODUCT_ID", referencedColumnName = "ID")}
     )
-    List<Product> productList = new ArrayList<>();
+    List<CartProduct> productList = new ArrayList<>();
 
 }

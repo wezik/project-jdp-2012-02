@@ -10,5 +10,5 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartDto {
     Long id;
-    List<ProductListDto> productList;
+    List<CartProductDto> productList;
 }

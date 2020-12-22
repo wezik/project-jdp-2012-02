@@ -1,17 +1,16 @@
 package com.kodilla.ecommercee.dto;
 
+import com.kodilla.ecommercee.domain.Cart;
+import com.kodilla.ecommercee.domain.Product;
 import lombok.AccessLevel;
 import lombok.Value;
 import lombok.experimental.FieldDefaults;
 
-import java.math.BigDecimal;
-
 @Value
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductListDto {
+public class CartProductDto {
     Long id;
-    String name;
-    String description;
-    BigDecimal price;
-    Long groupId;
+    Cart cart;
+    Product product;
+    Long quantity;
 }
