@@ -55,12 +55,5 @@ public class Product {
     )
     List<CartProduct> cartProductsWhichContainsThisProduct = new ArrayList<>();
 
-    //DODATKOWY KONSTRUKTOR BEZ POLA ID DLA TESTÓW
-    public Product(@NotNull @NonNull String name, @NotNull @NonNull String description, @NotNull @NonNull BigDecimal price, @NonNull @NotNull Group group) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.group = group;
-    }
 }
 

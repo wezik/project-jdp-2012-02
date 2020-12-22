@@ -17,6 +17,10 @@ public class CartDbService {
 
     final CartRepository repository;
 
+    public Cart getCart(Long cartId) {
+        return repository.findById(cartId).get();
+    }
+
     public void createCart(Cart cart) {
         repository.save(cart);
     }
