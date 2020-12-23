@@ -10,8 +10,8 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "CART_PRODUCT")
-public class CartProduct {
+@Entity(name = "CART_ENTRIES")
+public class CartEntry {
 
     @Id
     @GeneratedValue

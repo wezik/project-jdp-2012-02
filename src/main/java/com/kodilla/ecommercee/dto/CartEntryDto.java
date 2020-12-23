@@ -6,8 +6,8 @@ import lombok.experimental.FieldDefaults;
 
 @Value
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartProductDto {
-    Long cartProductId;
+public class CartEntryDto {
+    Long cartEntryId;
     Long cartId;
     ProductDto productDetails;
     Long quantity;

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartMapper {
 
-    final CartProductMapper cartProductMapper;
+    final CartEntryMapper cartEntryMapper;
 
     public Cart mapToCart() {
         return new Cart();
@@ -21,7 +21,7 @@ public class CartMapper {
     public CartDto mapToCartDto(final Cart cart) {
         return new CartDto(
                 cart.getId(),
-                cartProductMapper.mapToCartProductDtoList(cart.getProductList())
+                cartEntryMapper.mapToCartEntryDtoList(cart.getProductList())
         );
     }
 

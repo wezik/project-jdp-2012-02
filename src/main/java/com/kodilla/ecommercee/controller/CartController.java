@@ -1,9 +1,9 @@
 package com.kodilla.ecommercee.controller;
 
-import com.kodilla.ecommercee.domain.CartProduct;
-import com.kodilla.ecommercee.dto.CartProductDto;
+import com.kodilla.ecommercee.domain.CartEntry;
+import com.kodilla.ecommercee.dto.CartEntryDto;
 import com.kodilla.ecommercee.mapper.CartMapper;
-import com.kodilla.ecommercee.mapper.CartProductMapper;
+import com.kodilla.ecommercee.mapper.CartEntryMapper;
 import com.kodilla.ecommercee.service.CartDbService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.List;
 public class CartController {
 
     final CartMapper cartMapper;
-    final CartProductMapper cartProductMapper;
+    final CartEntryMapper cartEntryMapper;
     final CartDbService service;
 
 
@@ -29,9 +29,9 @@ public class CartController {
     }
 
     @GetMapping(value = "getProducts/{cartId}")
-    public List<CartProductDto> getProducts(@PathVariable Long cartId) {
-        List<CartProduct> products = service.getProducts(cartId);
-        return cartProductMapper.mapToCartProductDtoList(products);
+    public List<CartEntryDto> getProducts(@PathVariable Long cartId) {
+        List<CartEntry> products = service.getProducts(cartId);
+        return cartEntryMapper.mapToCartEntryDtoList(products);
     }
 
     @PostMapping(value = "addProduct/{productId}")

@@ -1,7 +1,7 @@
 package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.domain.Cart;
-import com.kodilla.ecommercee.domain.CartProduct;
+import com.kodilla.ecommercee.domain.CartEntry;
 import com.kodilla.ecommercee.repository.CartRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +25,7 @@ public class CartDbService {
         repository.save(cart);
     }
 
-    public List<CartProduct> getProducts(Long cartId) {
+    public List<CartEntry> getProducts(Long cartId) {
         return repository.findById(cartId).get().getProductList();
     }
 

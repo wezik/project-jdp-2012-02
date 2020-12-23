@@ -49,11 +49,11 @@ public class Product {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany
     @JoinTable(
-            name = "CARTPRODUCT_JOIN_PRODUCT",
+            name = "PRODUCT_JOIN_CARTENTRIES",
             joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "CART_PRODUCT_ID", referencedColumnName = "ID")}
+            inverseJoinColumns = {@JoinColumn(name = "CART_ENTRY_ID", referencedColumnName = "ID")}
     )
-    List<CartProduct> cartProductsWhichContainsThisProduct = new ArrayList<>();
+    List<CartEntry> cartEntriesWhichContainsThisEntry = new ArrayList<>();
 
 }
 

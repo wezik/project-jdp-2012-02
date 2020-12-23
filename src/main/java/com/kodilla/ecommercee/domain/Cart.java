@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@Entity(name = "Carts")
+@Entity(name = "CARTS")
 public class Cart {
 
     @Id
@@ -24,10 +24,10 @@ public class Cart {
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany
     @JoinTable(
-            name = "CARTS_JOIN_CARTPRODUCT",
+            name = "CARTS_JOIN_CARTENTRIES",
             joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "CART_PRODUCT_ID", referencedColumnName = "ID")}
+            inverseJoinColumns = {@JoinColumn(name = "CART_ENTRY_ID", referencedColumnName = "ID")}
     )
-    List<CartProduct> productList = new ArrayList<>();
+    List<CartEntry> productList = new ArrayList<>();
 
 }
