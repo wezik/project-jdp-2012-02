@@ -38,6 +38,11 @@ public class Order {
     @Column(name = "SHIPPINGADDRESS")
     private String shippingAddress;
 
+    
+    private User user;
 
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 }
 
