@@ -8,9 +8,11 @@ import com.kodilla.ecommercee.repository.CartRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -19,34 +21,43 @@ public class CartDbService {
 
     final CartRepository repository;
     final CartEntryDbService cartEntryDbService;
-    final ProductDbService productDbService;
+    private ProductDbService productDbService;
 
-    public Cart getCart(Long cartId) {
-        return repository.findById(cartId).get();
+    @Autowired
+    public void setProductDbService(ProductDbService productDbService) {
+        this.productDbService = productDbService;
     }
 
-    public void createCart() {
-        repository.save(new Cart());
+    public Optional<Cart> getCart(Long cartId) {
+        return repository.findById(cartId);
+    }
+
+    public Cart createCart() {
+        return repository.save(new Cart());
     }
 
     public void updateCart(Cart cart) {
         repository.save(cart);
     }
 
+    public void deleteCart(Long cartId) {
+        repository.deleteById(cartId);
+    }
+
     public List<CartEntry> getProducts(Long cartId) {
-        return repository.findById(cartId).get().getProductList();
+        return repository.findById(cartId).get().getCartEntryList();
     }
 
     public CartEntry addProduct(AddCartEntryDto addCartEntryDto) {
-        Cart cartFromDb = getCart(addCartEntryDto.getCartId());
-        Product productFromDb = productDbService.getProduct(addCartEntryDto.getProductId());
+        Cart cartFromDb = getCart(addCartEntryDto.getCartId()).get();
+        Product productFromDb = productDbService.getProduct(addCartEntryDto.getProductId()).get();
         CartEntry newEntry = cartEntryDbService.saveEntry(new CartEntry(
                 cartFromDb,
                 productFromDb,
                 addCartEntryDto.getQuantity()
         ));
 
-        cartFromDb.getProductList().add(newEntry);
+        cartFromDb.getCartEntryList().add(newEntry);
         productFromDb.getCartEntriesWhichContainsThisEntry().add(newEntry);
 
         updateCart(cartFromDb);
@@ -56,11 +67,11 @@ public class CartDbService {
     }
 
     public void deleteProduct(Long cartEntryId) {
-        CartEntry entryFromDb = cartEntryDbService.getEntry(cartEntryId);
+        CartEntry entryFromDb = cartEntryDbService.getEntry(cartEntryId).get();
         Cart cartFromDb = entryFromDb.getCart();
         Product productFromDb = entryFromDb.getProduct();
 
-        cartFromDb.getProductList().remove(entryFromDb);
+        cartFromDb.getCartEntryList().remove(entryFromDb);
         productFromDb.getCartEntriesWhichContainsThisEntry().remove(entryFromDb);
 
         updateCart(cartFromDb);

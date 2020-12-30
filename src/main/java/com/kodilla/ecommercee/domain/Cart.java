@@ -22,12 +22,12 @@ public class Cart {
     Long id;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "CARTS_JOIN_CARTENTRIES",
             joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "CART_ENTRY_ID", referencedColumnName = "ID")}
     )
-    List<CartEntry> productList = new ArrayList<>();
+    List<CartEntry> cartEntryList = new ArrayList<>();
 
 }

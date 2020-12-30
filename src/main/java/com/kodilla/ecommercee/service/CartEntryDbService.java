@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @RequiredArgsConstructor
@@ -18,8 +20,8 @@ public class CartEntryDbService {
         return repository.save(cartEntry);
     }
 
-    public CartEntry getEntry(Long entryId) {
-        return repository.findById(entryId).get();
+    public Optional<CartEntry> getEntry(Long entryId) {
+        return repository.findById(entryId);
     }
 
     public void deleteEntry(Long entryId) {

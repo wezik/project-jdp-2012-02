@@ -23,7 +23,7 @@ public class CartEntryMapper {
     final CartDbService cartDbService;
 
     public CartEntry mapToCartEntry(final CartEntryDto cartEntryDto) {
-        Cart cart = cartDbService.getCart(cartEntryDto.getCartId());
+        Cart cart = cartDbService.getCart(cartEntryDto.getCartId()).get();
         Product product = productMapper.mapToProduct(cartEntryDto.getProductDetails());
         return new CartEntry(
                 cart,
