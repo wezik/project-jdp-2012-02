@@ -5,8 +5,9 @@ import com.kodilla.ecommercee.dto.ProductDto;
 import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
 import com.kodilla.ecommercee.mapper.ProductMapper;
 import com.kodilla.ecommercee.service.ProductDbService;
+import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -15,14 +16,15 @@ import java.util.List;
 @CrossOrigin(origins = "*")
 @RequestMapping("v1/product")
 @RequiredArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductController {
 
-    private final ProductDbService service;
-    private final ProductMapper mapper;
+    final ProductDbService service;
+    final ProductMapper mapper;
 
     @GetMapping(value = "getProducts")
     public List<ProductDto> getProducts() {
-        return mapper.mapToProductDtoList(service.getProducts());
+        return mapper.mapToProductListDto(service.getProducts());
     }
 
     @GetMapping(value = "getProduct/{productId}")

@@ -4,17 +4,20 @@ import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.ProductDto;
 import com.kodilla.ecommercee.service.GroupDbService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AccessLevel;
+import lombok.RequiredArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@RequiredArgsConstructor
 public class ProductMapper {
 
-    @Autowired
-    private GroupDbService groupDbService;
+    final GroupDbService groupDbService;
 
     public ProductDto mapToProductDto(final Product product) {
         return new ProductDto(
@@ -22,9 +25,14 @@ public class ProductMapper {
                 product.getName(),
                 product.getDescription(),
                 product.getPrice(),
-                product.getGroup().getId(),
-                product.getCartsWhichContainsThisProduct()
+                product.getGroup().getId()
         );
+    }
+
+    public List<ProductDto> mapToProductListDto (final List<Product> products) {
+        return products.stream()
+                .map(this::mapToProductDto)
+                .collect(Collectors.toList());
     }
 
     public Product mapToProduct(final ProductDto productDto) {
@@ -36,14 +44,7 @@ public class ProductMapper {
                 productDto.getName(),
                 productDto.getDescription(),
                 productDto.getPrice(),
-                assignedGroup.get(),
-                productDto.getCartsWhichContainsThisProduct()
+                assignedGroup.get()
         );
-    }
-
-    public List<ProductDto> mapToProductDtoList(final List<Product> products) {
-        return products.stream()
-                .map(this::mapToProductDto)
-                .collect(Collectors.toList());
     }
 }
