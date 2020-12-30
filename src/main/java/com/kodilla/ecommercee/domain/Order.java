@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.domain;
 
+import lombok.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,11 +28,11 @@ public class Order {
 
     @NotNull
     @Column(name = "STATUS")
-    private String status = "pending";
+    private String status ;
 
     @NotNull
     @Column(name = "DATETIME")
-    private LocalDateTime dateTime;
+    private LocalDateTime dateTime = LocalDateTime.now();
 
     @NotNull
     @Column(name = "SHIPPINGADDRESS")
