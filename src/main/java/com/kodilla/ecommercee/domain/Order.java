@@ -42,7 +42,6 @@ public class Order {
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id", nullable = false)
+    @JoinColumn(name = "cart_id", nullable = false , referencedColumnName = "CART_ID")
     private Cart cart;
 }
-

@@ -22,4 +22,7 @@ public class Cart {
     @ManyToMany(cascade = CascadeType.MERGE, mappedBy = "cartsWhichContainsThisProduct")
     List<Product> productList = new ArrayList<>();
 
+    @OneToOne(mappedBy = "cart")
+    Order order;
+
 }
