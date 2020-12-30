@@ -4,11 +4,11 @@ import lombok.AccessLevel;
 import lombok.Value;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Value
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class CartDto {
-    Long id;
-    List<CartEntryDto> productList;
+public class CartEntryDto {
+    Long cartEntryId;
+    Long cartId;
+    ProductDto productDetails;
+    Long quantity;
 }
