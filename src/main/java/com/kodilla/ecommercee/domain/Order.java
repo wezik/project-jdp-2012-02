@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "orders")
 public class Order {
 
@@ -38,11 +37,12 @@ public class Order {
     @Column(name = "SHIPPINGADDRESS")
     private String shippingAddress;
 
-    
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id")
+    @JoinColumn(name = "cart_id", nullable = false)
     private Cart cart;
 }
 
