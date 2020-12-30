@@ -2,13 +2,16 @@ package com.kodilla.ecommercee.domain;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
-@AllArgsConstructor
+@RequiredArgsConstructor
 @NoArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -17,31 +20,40 @@ public class Product {
 
     @Id
     @NotNull
+    @NonNull
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "PRODUCT_ID", unique = true)
+    @Column(name = "ID", unique = true)
     Long id;
 
     @NotNull
+    @NonNull
     @Column(name = "NAME")
     String name;
 
     @NotNull
+    @NonNull
     @Column(name = "DESCRIPTION")
     String description;
 
     @NotNull
+    @NonNull
     @Column(name = "PRICE")
     BigDecimal price;
 
+    @NonNull
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "GROUP_ID")
     Group group;
 
-    @ManyToMany
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany
     @JoinTable(
-            name = "PRODUCTS_IN_CARTS",
-            joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "PRODUCT_ID")},
-            inverseJoinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "CART_ID")}
+            name = "PRODUCT_JOIN_CARTENTRIES",
+            joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "CART_ENTRY_ID", referencedColumnName = "ID")}
     )
-    List<Cart> cartsWhichContainsThisProduct = new ArrayList<>();
+    List<CartEntry> cartEntriesWhichContainsThisEntry = new ArrayList<>();
+
 }
+
