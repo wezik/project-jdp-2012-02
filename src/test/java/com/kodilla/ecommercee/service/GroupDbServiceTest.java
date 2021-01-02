@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.domain.Group;
+import com.kodilla.ecommercee.repository.GroupRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,9 @@ public class GroupDbServiceTest {
 
     @Autowired
     GroupDbService groupDbService;
+
+    @Autowired
+    GroupRepository groupRepository;
 
     @Test
     public void group_CRUD() {
@@ -53,5 +57,9 @@ public class GroupDbServiceTest {
             //Then
             assertNotEquals(update,result);
             assertEquals(update.getGroupName(),"Updated name");
+
+        //Cleanup
+
+            groupRepository.deleteAll();
     }
 }
