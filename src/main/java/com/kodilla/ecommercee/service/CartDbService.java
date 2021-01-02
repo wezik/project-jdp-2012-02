@@ -35,7 +35,7 @@ public class CartDbService {
     }
 
     public List<CartEntry> getProducts(Long cartId) {
-        return repository.findById(cartId).get().getProductList();
+        return repository.findById(cartId).get().getCartEntryList();
     }
 
     public CartEntry addProduct(AddCartEntryDto addCartEntryDto) {

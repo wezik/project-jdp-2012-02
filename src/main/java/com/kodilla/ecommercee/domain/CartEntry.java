@@ -37,12 +37,12 @@ public class CartEntry {
     Long quantity;
 
     public void setRelationsInCartAndProductJoinTables() {
-        cart.getProductList().add(this);
+        cart.getCartEntryList().add(this);
         product.getCartEntriesWhichContainsThisEntry().add(this);
     }
 
     public void removeRelationsFromCartAndProductTables() {
-        cart.getProductList().remove(this);
+        cart.getCartEntryList().remove(this);
         product.getCartEntriesWhichContainsThisEntry().remove(this);
     }
 }
