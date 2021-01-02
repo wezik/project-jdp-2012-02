@@ -2,6 +2,7 @@ package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.domain.Cart;
 import com.kodilla.ecommercee.domain.CartEntry;
+import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.AddCartEntryDto;
 import com.kodilla.ecommercee.repository.CartRepository;
@@ -25,8 +26,8 @@ public class CartDbService {
         return repository.findById(cartId).get();
     }
 
-    public void createCart() {
-        repository.save(new Cart());
+    public Cart createCart() {
+        return repository.save(new Cart());
     }
 
     public void updateCart(Cart cart) {
@@ -40,14 +41,14 @@ public class CartDbService {
     public CartEntry addProduct(AddCartEntryDto addCartEntryDto) {
         Cart cartFromDb = getCart(addCartEntryDto.getCartId());
         Product productFromDb = productDbService.getProduct(addCartEntryDto.getProductId());
+
         CartEntry newEntry = cartEntryDbService.saveEntry(new CartEntry(
                 cartFromDb,
                 productFromDb,
                 addCartEntryDto.getQuantity()
         ));
 
-        cartFromDb.getProductList().add(newEntry);
-        productFromDb.getCartEntriesWhichContainsThisEntry().add(newEntry);
+        newEntry.setRelationsInCartAndProductJoinTables();
 
         updateCart(cartFromDb);
         productDbService.saveProduct(productFromDb);
@@ -60,8 +61,7 @@ public class CartDbService {
         Cart cartFromDb = entryFromDb.getCart();
         Product productFromDb = entryFromDb.getProduct();
 
-        cartFromDb.getProductList().remove(entryFromDb);
-        productFromDb.getCartEntriesWhichContainsThisEntry().remove(entryFromDb);
+        entryFromDb.removeRelationsFromCartAndProductTables();
 
         updateCart(cartFromDb);
         productDbService.saveProduct(productFromDb);

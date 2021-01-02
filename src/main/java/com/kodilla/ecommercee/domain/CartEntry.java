@@ -35,4 +35,14 @@ public class CartEntry {
     @NonNull
     @Column(name = "QUANTITY")
     Long quantity;
+
+    public void setRelationsInCartAndProductJoinTables() {
+        cart.getProductList().add(this);
+        product.getCartEntriesWhichContainsThisEntry().add(this);
+    }
+
+    public void removeRelationsFromCartAndProductTables() {
+        cart.getProductList().remove(this);
+        product.getCartEntriesWhichContainsThisEntry().remove(this);
+    }
 }

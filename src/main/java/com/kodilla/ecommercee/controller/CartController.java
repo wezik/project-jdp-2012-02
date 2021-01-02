@@ -2,8 +2,10 @@ package com.kodilla.ecommercee.controller;
 
 import com.kodilla.ecommercee.domain.CartEntry;
 import com.kodilla.ecommercee.dto.AddCartEntryDto;
+import com.kodilla.ecommercee.dto.CartDto;
 import com.kodilla.ecommercee.dto.CartEntryDto;
 import com.kodilla.ecommercee.mapper.CartEntryMapper;
+import com.kodilla.ecommercee.mapper.CartMapper;
 import com.kodilla.ecommercee.service.CartDbService;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,11 +22,12 @@ public class CartController {
 
     final CartEntryMapper cartEntryMapper;
     final CartDbService service;
+    final CartMapper cartMapper;
 
 
     @PostMapping(value = "createCart")
-    public void createCart() {
-        service.createCart();
+    public CartDto createCart() {
+        return cartMapper.mapToCartDto(service.createCart());
     }
 
     @GetMapping(value = "getProducts/{cartId}")
@@ -42,11 +45,6 @@ public class CartController {
     @DeleteMapping(value = "deleteProduct/{cartEntryId}")
     public void deleteProduct(@PathVariable Long cartEntryId) {
         service.deleteProduct(cartEntryId);
-    }
-
-    @PostMapping(value = "createOrder/{cartId}")
-    public void createOrder(@PathVariable Long cartId) {
-        System.out.println("Creating new order, based on cart with id: " + cartId);
     }
 
 }

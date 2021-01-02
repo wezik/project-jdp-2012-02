@@ -15,7 +15,8 @@ public class OrderMapper {
                 order.getValue(),
                 order.getStatus(),
                 order.getDateTime(),
-                order.getShippingAddress()
+                order.getShippingAddress(),
+                order.getCart()
         );
     }
 
@@ -31,7 +32,8 @@ public class OrderMapper {
                 orderDto.getValue(),
                 orderDto.getStatus(),
                 orderDto.getDateTime(),
-                orderDto.getShippingAddress()
+                orderDto.getShippingAddress(),
+                orderDto.getCart()
         );
     }
 }

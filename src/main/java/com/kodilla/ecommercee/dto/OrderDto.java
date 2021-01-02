@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.dto;
 
+import com.kodilla.ecommercee.domain.Cart;
 import lombok.Value;
 import java.time.LocalDateTime;
 
@@ -11,5 +12,6 @@ public class OrderDto {
     private String status;
     private LocalDateTime dateTime;
     private String shippingAddress;
+    private Cart cart;
 
 }

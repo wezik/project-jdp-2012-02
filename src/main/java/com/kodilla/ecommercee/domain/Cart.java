@@ -11,7 +11,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "CARTS")
 public class Cart {
@@ -20,6 +19,10 @@ public class Cart {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", unique = true)
     Long id;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "ORDER_ID")
+    Order order;
 
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany
