@@ -21,6 +21,7 @@ public class CartMapper {
     public CartDto mapToCartDto(final Cart cart) {
         return new CartDto(
                 cart.getId(),
+                cart.getOrder().getId(),
                 cartEntryMapper.mapToCartEntryDtoList(cart.getCartEntryList())
         );
     }
