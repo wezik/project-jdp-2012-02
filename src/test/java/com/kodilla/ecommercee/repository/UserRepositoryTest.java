@@ -48,7 +48,7 @@ public class UserRepositoryTest {
     public void testUserFindAll() {
         //Given
         User user1 = new User("first_user", "1", 1234L);
-        User user2 = new User("secend_user", "0", 1232L);
+        User user2 = new User("second_user", "0", 1232L);
         userRepository.save(user1);
         userRepository.save(user2);
         //When
