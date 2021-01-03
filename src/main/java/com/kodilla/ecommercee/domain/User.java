@@ -29,4 +29,10 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
+
+    public User(String username, @NotNull String status, Long userKey) {
+        this.username = username;
+        this.status = status;
+        this.userKey = userKey;
+    }
 }
