@@ -20,7 +20,7 @@ public class Cart {
     @Column(name = "ID", unique = true)
     Long id;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne
     @JoinColumn(name = "ORDER_ID")
     Order order;
 
