@@ -38,7 +38,7 @@ public class Order {
     @Column(name = "SHIPPINGADDRESS")
     private String shippingAddress;
 
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToOne
     @JoinColumn(name = "CART_ID")
     private Cart cart;
 
