@@ -23,43 +23,68 @@ public class GroupDbServiceTest {
     GroupRepository groupRepository;
 
     @Test
-    public void group_CRUD() {
-        //Create
+    public void group_crud_create_test() {
+        //Given
 
-            //Given
-            Group sample = new Group("Test");
+        //When
+        Group result1 = groupDbService.saveGroup(new Group("Create"));
+        Group result2 = groupDbService.saveGroup(new Group("Test"));
 
-            //When
-            Group result = groupDbService.saveGroup(sample);
-
-            //Then
-            assertEquals(sample.getGroupName(),result.getGroupName());
-
-        //Read
-
-            //Given
-
-            //When
-            Optional<Group> read = groupDbService.getGroup(result.getId());
-
-            //Then
-            assertTrue(read.isPresent());
-            assertEquals(read.get().getGroupName(),result.getGroupName());
-
-        //Update
-
-            //Given
-            Group updateSample = new Group(result.getId(),"Updated name",result.getProductList());
-
-            //When
-            Group update = groupDbService.saveGroup(updateSample);
-
-            //Then
-            assertNotEquals(update,result);
-            assertEquals(update.getGroupName(),"Updated name");
+        //Then
+        assertTrue(groupRepository.findById(result1.getId()).isPresent());
+        assertTrue(groupRepository.findById(result2.getId()).isPresent());
 
         //Cleanup
+        groupRepository.deleteAll();
+    }
 
-            groupRepository.deleteAll();
+    @Test
+    public void group_crud_read_test() {
+        //Given
+        Group sample = groupRepository.save(new Group("Read"));
+
+        //When
+        Optional<Group> result = groupDbService.getGroup(sample.getId());
+
+        //Then
+        assertTrue(result.isPresent());
+        assertEquals(result.get().getGroupName(),"Read");
+
+        //Cleanup
+        groupRepository.deleteAll();
+    }
+
+    @Test
+    public void group_crud_update_test() {
+        //Given
+        Group sample = groupRepository.save(new Group("Update"));
+        int size = groupRepository.findAll().size();
+
+        //When
+        Group result = groupDbService.saveGroup(new Group(sample.getId(),"Updated Name",sample.getProductList()));
+
+        //Then
+        assertEquals(sample.getId(),result.getId());
+        assertEquals(result.getGroupName(),"Updated Name");
+        assertEquals(groupRepository.findAll().size(),size);
+
+        //Cleanup
+        groupRepository.deleteAll();
+    }
+
+    @Test
+    public void group_crud_delete_test() {
+        //Given
+        Group sample = groupRepository.save(new Group("Delete"));
+        int size = groupRepository.findAll().size();
+
+        //When
+        groupDbService.deleteGroup(sample);
+
+        //Then
+        assertEquals(groupRepository.findAll().size(),size-1);
+
+        //Cleanup
+        groupRepository.deleteAll();
     }
 }
