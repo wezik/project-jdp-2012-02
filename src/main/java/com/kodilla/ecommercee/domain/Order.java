@@ -38,8 +38,4 @@ public class Order {
     @Column(name = "SHIPPINGADDRESS")
     private String shippingAddress;
 
-    @OneToOne
-    @JoinColumn(name = "CART_ID")
-    private Cart cart;
-
 }

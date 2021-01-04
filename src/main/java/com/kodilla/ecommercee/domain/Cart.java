@@ -20,10 +20,6 @@ public class Cart {
     @Column(name = "ID", unique = true)
     Long id;
 
-    @OneToOne
-    @JoinColumn(name = "ORDER_ID")
-    Order order;
-
     @LazyCollection(LazyCollectionOption.FALSE)
     @OneToMany
     @JoinTable(

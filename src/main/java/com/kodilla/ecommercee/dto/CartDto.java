@@ -10,6 +10,5 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class CartDto {
     Long id;
-    Long orderId;
     List<CartEntryDto> cartEntryList;
 }

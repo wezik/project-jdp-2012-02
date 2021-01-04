@@ -12,6 +12,5 @@ public class OrderDto {
     private String status;
     private LocalDateTime dateTime;
     private String shippingAddress;
-    private Cart cart;
 
 }
