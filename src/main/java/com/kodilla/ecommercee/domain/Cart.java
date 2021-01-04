@@ -30,4 +30,7 @@ public class Cart {
     )
     List<CartEntry> productList = new ArrayList<>();
 
+    public Cart(Long id) {
+        this.id = id;
+    }
 }

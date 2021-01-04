@@ -3,9 +3,12 @@ package com.kodilla.ecommercee.controller;
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.dto.OrderDto;
 import com.kodilla.ecommercee.exceptions.OrderNotFoundException;
+import com.kodilla.ecommercee.mapper.CartMapper;
 import com.kodilla.ecommercee.mapper.OrderMapper;
+import com.kodilla.ecommercee.mapper.UserMapper;
 import com.kodilla.ecommercee.service.OrderDbService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.ApplicationContext;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +23,8 @@ public class OrderController {
 
     private final OrderMapper orderMapper;
     private final OrderDbService orderDbService;
-
+    private final UserMapper userMapper;
+    private final CartMapper cartMapper;
 
 
     @GetMapping(value = "getOrder/{id}")
@@ -38,7 +42,11 @@ public class OrderController {
 
     @PostMapping(value = "addOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addOrder(@RequestBody OrderDto orderDto){
+        System.out.println("--------------------------------- DTO ---------------------------------");
+        System.out.println(orderDto);
         Order order = orderMapper.mapToOrder(orderDto);
+        order.setUser(userMapper.mapToUser(orderDto.getUserDto()));
+        order.setCart(cartMapper.mapToCart(orderDto.getCartDto()));
         orderDbService.saveOrder(order);
     }
 

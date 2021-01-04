@@ -15,7 +15,9 @@ public class CartMapper {
     final CartEntryMapper cartEntryMapper;
 
     public Cart mapToCart(CartDto cartDto) {
-        return new Cart();
+        return new Cart(
+                cartDto.getId()
+        );
     }
 
     public CartDto mapToCartDto(final Cart cart) {
