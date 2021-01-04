@@ -21,7 +21,7 @@ public class Cart {
     Long id;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "CARTS_JOIN_CARTENTRIES",
             joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "ID")},

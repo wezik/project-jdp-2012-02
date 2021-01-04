@@ -68,4 +68,10 @@ public class CartDbService {
         cartEntryDbService.deleteEntry(entryFromDb.getId());
     }
 
+    public void deleteCart(Long cartId) {
+        getCart(cartId).getCartEntryList()
+                .forEach(e -> e.getProduct().getCartEntriesWhichContainsThisEntry().remove(e));
+        repository.deleteById(cartId);
+    }
+
 }
