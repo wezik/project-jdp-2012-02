@@ -12,4 +12,6 @@ public class OrderDto {
     private LocalDateTime dateTime;
     private String shippingAddress;
 
+    private UserDto userDto;
+    private CartDto cartDto;
 }

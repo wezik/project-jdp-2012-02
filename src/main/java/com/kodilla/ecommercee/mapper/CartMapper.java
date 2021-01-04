@@ -14,7 +14,7 @@ public class CartMapper {
 
     final CartEntryMapper cartEntryMapper;
 
-    public Cart mapToCart() {
+    public Cart mapToCart(CartDto cartDto) {
         return new Cart();
     }
 

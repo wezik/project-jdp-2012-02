@@ -1,16 +1,15 @@
 package com.kodilla.ecommercee.domain;
 
-import lombok.*;
-import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.ToString;
 import lombok.NoArgsConstructor;
-import lombok.experimental.FieldDefaults;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 @Getter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "orders")
@@ -38,5 +37,12 @@ public class Order {
     @Column(name = "SHIPPINGADDRESS")
     private String shippingAddress;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @OneToOne
+    @JoinColumn(name = "cart_id")
+    private Cart cart;
 
 }

@@ -9,13 +9,23 @@ import java.util.stream.Collectors;
 @Service
 public class OrderMapper {
 
+    private final UserMapper userMapper;
+    private final CartMapper cartMapper;
+
+    public OrderMapper(UserMapper userMapper, CartMapper cartMapper) {
+        this.userMapper = userMapper;
+        this.cartMapper = cartMapper;
+    }
+
     public OrderDto mapToOrderDto(final Order order){
         return new OrderDto(
                 order.getId(),
                 order.getValue(),
                 order.getStatus(),
                 order.getDateTime(),
-                order.getShippingAddress()
+                order.getShippingAddress(),
+                userMapper.mapToUserDto(order.getUser()),
+                cartMapper.mapToCartDto(order.getCart())
         );
     }
 
@@ -31,7 +41,9 @@ public class OrderMapper {
                 orderDto.getValue(),
                 orderDto.getStatus(),
                 orderDto.getDateTime(),
-                orderDto.getShippingAddress()
+                orderDto.getShippingAddress(),
+                userMapper.mapToUser(orderDto.getUserDto()),
+                cartMapper.mapToCart(orderDto.getCartDto())
         );
     }
 }
