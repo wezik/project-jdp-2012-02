@@ -42,8 +42,6 @@ public class OrderController {
 
     @PostMapping(value = "addOrder", consumes = MediaType.APPLICATION_JSON_VALUE)
     public void addOrder(@RequestBody OrderDto orderDto){
-        System.out.println("--------------------------------- DTO ---------------------------------");
-        System.out.println(orderDto);
         Order order = orderMapper.mapToOrder(orderDto);
         order.setUser(userMapper.mapToUser(orderDto.getUserDto()));
         order.setCart(cartMapper.mapToCart(orderDto.getCartDto()));

@@ -21,13 +21,14 @@ public class Cart {
     @Column(name = "ID", unique = true)
     Long id;
 
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany
-    @JoinTable(
-            name = "CARTS_JOIN_CARTENTRIES",
-            joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "ID")},
-            inverseJoinColumns = {@JoinColumn(name = "CART_ENTRY_ID", referencedColumnName = "ID")}
-    )
+//    @LazyCollection(LazyCollectionOption.FALSE)
+//    @OneToMany
+//    @JoinTable(
+//            name = "CARTS_JOIN_CARTENTRIES",
+//            joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "ID")},
+//            inverseJoinColumns = {@JoinColumn(name = "CART_ENTRY_ID", referencedColumnName = "ID")}
+//    )
+    @OneToMany(mappedBy = "cart")
     List<CartEntry> productList = new ArrayList<>();
 
     public Cart(Long id) {
