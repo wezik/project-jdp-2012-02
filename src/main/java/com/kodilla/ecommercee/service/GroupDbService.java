@@ -25,4 +25,8 @@ public class GroupDbService {
     public Group saveGroup(Group group) {
         return groupRepository.save(group);
     }
+
+    public void deleteGroup(Group group) {
+        groupRepository.delete(group);
+    }
 }
