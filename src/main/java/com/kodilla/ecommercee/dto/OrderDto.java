@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.dto;
 
+import com.kodilla.ecommercee.domain.Cart;
 import lombok.Value;
 import java.time.LocalDateTime;
 
