@@ -22,12 +22,12 @@ public class CartController {
 
     final CartEntryMapper cartEntryMapper;
     final CartDbService service;
-    final CartMapper mapper;
+    final CartMapper cartMapper;
 
 
     @PostMapping(value = "createCart")
     public CartDto createCart() {
-        return mapper.mapToCartDto(service.createCart());
+        return cartMapper.mapToCartDto(service.createCart());
     }
 
     @GetMapping(value = "getProducts/{cartId}")
@@ -47,9 +47,7 @@ public class CartController {
         service.deleteProduct(cartEntryId);
     }
 
-    @PostMapping(value = "createOrder/{cartId}")
-    public void createOrder(@PathVariable Long cartId) {
-        System.out.println("Creating new order, based on cart with id: " + cartId);
-    }
+    @DeleteMapping(value = "deleteCart/{cartId}")
+    public void deleteCart(@PathVariable Long cartId) {service.deleteCart(cartId);}
 
 }

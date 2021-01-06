@@ -11,6 +11,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -40,7 +41,7 @@ public class ProductController {
 
     @PutMapping(value = "updateProduct", consumes = MediaType.APPLICATION_JSON_VALUE)
     public ProductDto updateProduct(@RequestBody ProductDto productDto) {
-        Product updatedProduct = service.saveProduct(mapper.mapToProduct(productDto));
+        Product updatedProduct = service.updateProduct(productDto);
         return mapper.mapToProductDto(updatedProduct);
     }
 

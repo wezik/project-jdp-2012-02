@@ -26,7 +26,7 @@ public class GroupDbService {
         return groupRepository.save(group);
     }
 
-    public void deleteGroup(Long id) {
-        groupRepository.deleteById(id);
+    public void deleteGroup(Group group) {
+        groupRepository.delete(group);
     }
 }

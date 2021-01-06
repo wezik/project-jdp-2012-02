@@ -1,7 +1,9 @@
 package com.kodilla.ecommercee.service;
 
-import com.kodilla.ecommercee.domain.CartEntry;
+import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.Product;
+import com.kodilla.ecommercee.dto.ProductDto;
+import com.kodilla.ecommercee.exceptions.GroupNotFoundException;
 import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
 import com.kodilla.ecommercee.repository.ProductRepository;
 import lombok.AccessLevel;
@@ -10,7 +12,6 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -18,25 +19,32 @@ import java.util.Optional;
 public class ProductDbService {
 
     final ProductRepository repository;
-    final CartDbService cartDbService;
+    final GroupDbService groupDbService;
 
     public List<Product> getProducts() {
         return repository.findAll();
     }
 
-    public Optional<Product> getProduct(Long productId) throws ProductNotFoundException {
-        return repository.findById(productId);
+    public Product getProduct(Long productId) throws ProductNotFoundException {
+        return repository.findById(productId).orElseThrow(ProductNotFoundException::new);
     }
 
     public Product saveProduct(Product product) {
         return repository.save(product);
     }
 
+    public Product updateProduct(ProductDto productDto) {
+        Group group = groupDbService.getGroup(productDto.getGroupId()).orElseThrow(GroupNotFoundException::new);
+        Product product = getProduct(productDto.getId());
+        product.setName(productDto.getName());
+        product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
+        product.setGroup(group);
+        saveProduct(product);
+        return product;
+    }
+
     public void deleteProduct(Long productId) {
-        List<CartEntry> cartEntriesToDelete = getProduct(productId).get().getCartEntriesWhichContainsThisEntry();
-        for(CartEntry entry : cartEntriesToDelete) {
-            cartDbService.deleteProduct(entry.getId());
-        }
         repository.deleteById(productId);
     }
 
