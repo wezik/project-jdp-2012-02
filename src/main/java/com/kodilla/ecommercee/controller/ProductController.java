@@ -29,8 +29,8 @@ public class ProductController {
     }
 
     @GetMapping(value = "getProduct/{productId}")
-    public ProductDto getProduct(@PathVariable Long productId) throws ProductNotFoundException {
-        return mapper.mapToProductDto(service.getProduct(productId).orElseThrow(ProductNotFoundException::new));
+    public ProductDto getProduct(@PathVariable Long productId) {
+        return mapper.mapToProductDto(service.getProduct(productId));
     }
 
     @PostMapping(value = "createProduct", consumes = MediaType.APPLICATION_JSON_VALUE)

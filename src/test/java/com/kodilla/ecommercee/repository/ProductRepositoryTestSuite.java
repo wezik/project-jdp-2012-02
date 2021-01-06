@@ -1,13 +1,10 @@
 package com.kodilla.ecommercee.repository;
 
-import com.kodilla.ecommercee.domain.Cart;
-import com.kodilla.ecommercee.domain.CartEntry;
-import com.kodilla.ecommercee.domain.Group;
-import com.kodilla.ecommercee.domain.Product;
-import com.kodilla.ecommercee.service.CartDbService;
-import com.kodilla.ecommercee.service.CartEntryDbService;
-import com.kodilla.ecommercee.service.GroupDbService;
-import com.kodilla.ecommercee.service.ProductDbService;
+import com.kodilla.ecommercee.domain.*;
+import com.kodilla.ecommercee.dto.ProductDto;
+import com.kodilla.ecommercee.service.*;
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,25 +12,34 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest
+@RunWith(SpringRunner.class)
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductRepositoryTestSuite {
 
     @Autowired
-    private ProductDbService productDbService;
+    ProductDbService productDbService;
     @Autowired
-    private GroupDbService groupDbService;
+    GroupDbService groupDbService;
     @Autowired
-    private CartDbService cartDbService;
+    CartDbService cartDbService;
     @Autowired
-    private CartEntryDbService cartEntryDbService;
+    CartEntryDbService cartEntryDbService;
+    @Autowired
+    CartRepository cartRepository;
+    @Autowired
+    CartEntryRepository cartEntryRepository;
+    @Autowired
+    ProductRepository productRepository;
 
     @Test
-    public void testCreateNewProductWithAssignedGroup() {
+    public void testSaveNewProduct() {
         //Given
         Group group = groupDbService.saveGroup(new Group("RTV"));
         Product product = productDbService.saveProduct(new Product(
@@ -46,7 +52,6 @@ public class ProductRepositoryTestSuite {
 
         //When
         long productId = product.getId();
-        long groupId = group.getId();
         String groupName = product.getGroup().getGroupName();
         String productName = group.getProductList().get(0).getName();
 
@@ -58,14 +63,112 @@ public class ProductRepositoryTestSuite {
         //CleanUp
         try {
             productDbService.deleteProduct(productId);
-            groupDbService.deleteGroup(groupId);
+            groupDbService.deleteGroup(group);
         } catch (Exception e) {
             System.out.println(e);
         }
     }
 
     @Test
-    public void testDeleteProductWhichBelongsToCartEntry() {
+    public void testGetTargetProduct() {
+        //Given
+        Group group = groupDbService.saveGroup(new Group("RTV"));
+        Product product = productDbService.saveProduct(new Product(
+                "TV",
+                "65 inches",
+                new BigDecimal(3000),
+                group));
+        group.getProductList().add(product);
+        groupDbService.saveGroup(group);
+
+        //WHen
+        long productId = product.getId();
+        Optional<Product> extracted= Optional.ofNullable(productDbService.getProduct(productId));
+
+        //Then
+        assertTrue(extracted.isPresent());
+
+        //CleanUp
+        try {
+            productDbService.deleteProduct(productId);
+            groupDbService.deleteGroup(group);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void testGetAllProducts() {
+        //Given
+        Group group = groupDbService.saveGroup(new Group("RTV"));
+        Product product = productDbService.saveProduct(new Product(
+                "TV",
+                "65 inches",
+                new BigDecimal(3000),
+                group));
+        group.getProductList().add(product);
+        Product product1 = productDbService.saveProduct(new Product(
+                "Computer",
+                "apple",
+                new BigDecimal(4000),
+                group));
+        group.getProductList().add(product);
+        groupDbService.saveGroup(group);
+
+        //When
+        List<Product> extractedProducts = productDbService.getProducts();
+
+        //Then
+        assertEquals(2, extractedProducts.size());
+
+        //CleanUp
+        try {
+            productDbService.deleteProduct(product.getId());
+            productDbService.deleteProduct(product1.getId());
+            groupDbService.deleteGroup(group);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void testUpdateProduct() {
+        //Given
+        Group group = groupDbService.saveGroup(new Group("RTV"));
+        Product product = productDbService.saveProduct(new Product(
+                "TV",
+                "65 inches",
+                new BigDecimal(3000),
+                group));
+        group.getProductList().add(product);
+        groupDbService.saveGroup(group);
+
+        //When
+        Product updated = productDbService.updateProduct(new ProductDto(
+                product.getId(),
+                "TV updated",
+                "Desc updated",
+                new BigDecimal(3500),
+                group.getId()
+                )
+        );
+
+        //Then
+        assertEquals(updated.getName(), "TV updated");
+        assertEquals(updated.getDescription(), "Desc updated");
+        assertEquals(updated.getPrice(), new BigDecimal(3500));
+
+        //CleanUp
+        try {
+            productDbService.deleteProduct(product.getId());
+            groupDbService.deleteGroup(group);
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    @Test
+    public void testDbRelationsAfterDeleteProduct() {
         //Given
         Group group = groupDbService.saveGroup(new Group("RTV"));
 
@@ -80,26 +183,23 @@ public class ProductRepositoryTestSuite {
         Cart cart = cartDbService.createCart();
 
         CartEntry cartEntry = cartEntryDbService.saveEntry(new CartEntry(
-           cart,
-           product,
-           2L
+                cart,
+                product,
+                2L
         ));
 
-        cart.getCartEntryList().add(cartEntry);
+        cartEntry.setRelationsInCartAndProductJoinTables();
         cartDbService.updateCart(cart);
-
-        product.getCartEntriesWhichContainsThisEntry().add(cartEntry);
         productDbService.saveProduct(product);
 
         //When
         long productId = product.getId();
-        long groupId = group.getId();
         long cartId = cart.getId();
         productDbService.deleteProduct(productId);
         Optional<Group> groupExtracted = groupDbService.getGroup(group.getId());
-        Optional<Product> productExtracted = productDbService.getProduct(productId);
-        Optional<CartEntry> entryExtracted = cartEntryDbService.getEntry(cartEntry.getId());
-        Optional<Cart> cartExtracted = cartDbService.getCart(cart.getId());
+        Optional<Product> productExtracted = productRepository.findById(productId);
+        Optional<CartEntry> entryExtracted = cartEntryRepository.findById(cartEntry.getId());
+        Optional<Cart> cartExtracted = cartRepository.findById(cart.getId());
 
         //Then
         assertTrue(cartExtracted.isPresent());
@@ -111,63 +211,9 @@ public class ProductRepositoryTestSuite {
         //CleanUp
         try {
             cartDbService.deleteCart(cartId);
-            groupDbService.deleteGroup(groupId);
+            groupDbService.deleteGroup(group);
         } catch (Exception e) {
             System.out.println(e);
         }
     }
-
-    @Test
-    public void testChangeProductsGroupAndCartEntryList() {
-        //Given
-        Group group = groupDbService.saveGroup(new Group("RTV"));
-        Optional<Group> groupExtracted = groupDbService.getGroup(group.getId());
-        Group group1 = groupDbService.saveGroup(new Group("Small RTV"));
-        Optional<Group> group1Extracted = groupDbService.getGroup(group1.getId());
-
-        Product product = productDbService.saveProduct(new Product(
-                "TV",
-                "65 inches",
-                new BigDecimal(3000),
-                group));
-        Optional<Product> productExtracted = productDbService.getProduct(product.getId());
-        groupExtracted.get().getProductList().add(productExtracted.get());
-        groupDbService.saveGroup(groupExtracted.get());
-
-        Cart cart = cartDbService.createCart();
-        Optional<Cart> cartExtracted = cartDbService.getCart(cart.getId());
-        Cart cart1 = cartDbService.createCart();
-        Optional<Cart> cart1Extracted = cartDbService.getCart(cart1.getId());
-
-        CartEntry cartEntry = cartEntryDbService.saveEntry(new CartEntry(
-                cart,
-                product,
-                2L
-        ));
-        Optional<CartEntry> entryExtracted = cartEntryDbService.getEntry(cartEntry.getId());
-        CartEntry cartEntry1 = cartEntryDbService.saveEntry(new CartEntry(
-                cart1,
-                product,
-                1L
-        ));
-        Optional<CartEntry> entry1Extracted = cartEntryDbService.getEntry(cartEntry1.getId());
-
-        cartExtracted.get().getCartEntryList().add(entryExtracted.get());
-        cartDbService.updateCart(cartExtracted.get());
-
-        productExtracted.get().getCartEntriesWhichContainsThisEntry().add(entryExtracted.get());
-        productDbService.saveProduct(productExtracted.get());
-
-        //When
-        Long groupId = groupExtracted.get().getId();
-
-        productExtracted.get().setGroup(group1Extracted.get());
-        productExtracted.get().getCartEntriesWhichContainsThisEntry().add(entry1Extracted.get());
-        productDbService.saveProduct(product);
-
-        //Then
-        assertNotEquals(groupId, productExtracted.get().getGroup().getId());
-        assertEquals(2, productExtracted.get().getCartEntriesWhichContainsThisEntry().size());
-    }
-
 }

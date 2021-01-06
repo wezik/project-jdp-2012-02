@@ -53,13 +53,5 @@ public class Product {
             inverseJoinColumns = {@JoinColumn(name = "CART_ENTRY_ID", referencedColumnName = "ID")}
     )
     List<CartEntry> cartEntriesWhichContainsThisEntry = new ArrayList<>();
-
-    //Constructor for tests
-    public Product(@NotNull @NonNull String name, @NotNull @NonNull String description, @NotNull @NonNull BigDecimal price, @NonNull @NotNull Group group) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.group = group;
-    }
 }
 

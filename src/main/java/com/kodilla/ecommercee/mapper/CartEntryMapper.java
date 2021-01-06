@@ -12,6 +12,7 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,7 +24,7 @@ public class CartEntryMapper {
     final CartDbService cartDbService;
 
     public CartEntry mapToCartEntry(final CartEntryDto cartEntryDto) {
-        Cart cart = cartDbService.getCart(cartEntryDto.getCartId()).get();
+        Cart cart = cartDbService.getCart(cartEntryDto.getCartId());
         Product product = productMapper.mapToProduct(cartEntryDto.getProductDetails());
         return new CartEntry(
                 cart,

@@ -1,6 +1,7 @@
 package com.kodilla.ecommercee.service;
 
 import com.kodilla.ecommercee.domain.CartEntry;
+import com.kodilla.ecommercee.exceptions.CartEntryNotFoundException;
 import com.kodilla.ecommercee.repository.CartEntryRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -20,8 +21,8 @@ public class CartEntryDbService {
         return repository.save(cartEntry);
     }
 
-    public Optional<CartEntry> getEntry(Long entryId) {
-        return repository.findById(entryId);
+    public CartEntry getEntry(Long entryId) throws CartEntryNotFoundException {
+        return repository.findById(entryId).orElseThrow(CartEntryNotFoundException::new);
     }
 
     public void deleteEntry(Long entryId) {
