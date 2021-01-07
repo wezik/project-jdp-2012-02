@@ -12,6 +12,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -24,31 +25,25 @@ import static org.junit.Assert.assertEquals;
 public class ProductRepositoryTestSuite {
 
     @Autowired
-    ProductDbService productDbService;
-    @Autowired
-    GroupDbService groupDbService;
-    @Autowired
-    CartDbService cartDbService;
-    @Autowired
-    CartEntryDbService cartEntryDbService;
-    @Autowired
     CartRepository cartRepository;
     @Autowired
     CartEntryRepository cartEntryRepository;
     @Autowired
     ProductRepository productRepository;
+    @Autowired
+    GroupRepository groupRepository;
 
     @Test
     public void testSaveNewProduct() {
         //Given
-        Group group = groupDbService.saveGroup(new Group("RTV"));
-        Product product = productDbService.saveProduct(new Product(
+        Group group = groupRepository.save(new Group("RTV"));
+        Product product = productRepository.save(new Product(
                 "TV",
                 "65 inches",
                 new BigDecimal(3000),
                 group));
         group.getProductList().add(product);
-        groupDbService.saveGroup(group);
+        groupRepository.save(group);
 
         //When
         long productId = product.getId();
@@ -62,8 +57,8 @@ public class ProductRepositoryTestSuite {
 
         //CleanUp
         try {
-            productDbService.deleteProduct(productId);
-            groupDbService.deleteGroup(groupDbService.getGroup(group.getId()).get());
+            productRepository.deleteById(productId);
+            groupRepository.delete(groupRepository.findById(group.getId()).get());
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -72,26 +67,26 @@ public class ProductRepositoryTestSuite {
     @Test
     public void testGetTargetProduct() {
         //Given
-        Group group = groupDbService.saveGroup(new Group("RTV"));
-        Product product = productDbService.saveProduct(new Product(
+        Group group = groupRepository.save(new Group("RTV"));
+        Product product = productRepository.save(new Product(
                 "TV",
                 "65 inches",
                 new BigDecimal(3000),
                 group));
         group.getProductList().add(product);
-        groupDbService.saveGroup(group);
+        groupRepository.save(group);
 
         //WHen
         long productId = product.getId();
-        Optional<Product> extracted= Optional.ofNullable(productDbService.getProduct(productId));
+        Optional<Product> extracted= productRepository.findById(productId);
 
         //Then
         assertTrue(extracted.isPresent());
 
         //CleanUp
         try {
-            productDbService.deleteProduct(productId);
-            groupDbService.deleteGroup(groupDbService.getGroup(group.getId()).get());
+            productRepository.deleteById(productId);
+            groupRepository.delete(groupRepository.findById(group.getId()).get());
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -100,32 +95,32 @@ public class ProductRepositoryTestSuite {
     @Test
     public void testGetAllProducts() {
         //Given
-        Group group = groupDbService.saveGroup(new Group("RTV"));
-        Product product = productDbService.saveProduct(new Product(
+        Group group = groupRepository.save(new Group("RTV"));
+        Product product = productRepository.save(new Product(
                 "TV",
                 "65 inches",
                 new BigDecimal(3000),
                 group));
         group.getProductList().add(product);
-        Product product1 = productDbService.saveProduct(new Product(
+        Product product1 = productRepository.save(new Product(
                 "Computer",
                 "apple",
                 new BigDecimal(4000),
                 group));
         group.getProductList().add(product);
-        groupDbService.saveGroup(group);
+        groupRepository.save(group);
 
         //When
-        List<Product> extractedProducts = productDbService.getProducts();
+        List<Product> extractedProducts = productRepository.findAll();
 
         //Then
         assertEquals(2, extractedProducts.size());
 
         //CleanUp
         try {
-            productDbService.deleteProduct(product.getId());
-            productDbService.deleteProduct(product1.getId());
-            groupDbService.deleteGroup(groupDbService.getGroup(group.getId()).get());
+            productRepository.deleteById(product.getId());
+            productRepository.deleteById(product1.getId());
+            groupRepository.delete(groupRepository.findById(group.getId()).get());
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -134,22 +129,23 @@ public class ProductRepositoryTestSuite {
     @Test
     public void testUpdateProduct() {
         //Given
-        Group group = groupDbService.saveGroup(new Group("RTV"));
-        Product product = productDbService.saveProduct(new Product(
+        Group group = groupRepository.save(new Group("RTV"));
+        Product product = productRepository.save(new Product(
                 "TV",
                 "65 inches",
                 new BigDecimal(3000),
                 group));
         group.getProductList().add(product);
-        groupDbService.saveGroup(group);
+        groupRepository.save(group);
 
         //When
-        Product updatedProduct = productDbService.updateProduct(new ProductDto(
+        Product updatedProduct = productRepository.save(new Product(
                 product.getId(),
                 "TV updated",
                 "Desc updated",
                 new BigDecimal(3500),
-                group.getId()
+                groupRepository.findById(group.getId()).get(),
+                product.getCartEntriesWhichContainsThisEntry()
                 )
         );
 
@@ -160,8 +156,8 @@ public class ProductRepositoryTestSuite {
 
         //CleanUp
         try {
-            productDbService.deleteProduct(product.getId());
-            groupDbService.deleteGroup(groupDbService.getGroup(group.getId()).get());
+            productRepository.deleteById(product.getId());
+            groupRepository.delete(groupRepository.findById(group.getId()).get());
         } catch (Exception e) {
             System.out.println(e);
         }
@@ -170,27 +166,27 @@ public class ProductRepositoryTestSuite {
     @Test
     public void testDbRelationsBeforeAndAfterDeleteProduct() {
         //Given
-        Group group = groupDbService.saveGroup(new Group("RTV"));
+        Group group = groupRepository.save(new Group("RTV"));
 
-        Product product = productDbService.saveProduct(new Product(
+        Product product = productRepository.save(new Product(
                 "TV",
                 "65 inches",
                 new BigDecimal(3000),
                 group));
         group.getProductList().add(product);
-        groupDbService.saveGroup(group);
+        groupRepository.save(group);
 
-        Cart cart = cartDbService.createCart();
+        Cart cart = cartRepository.save(new Cart());
 
-        CartEntry cartEntry = cartEntryDbService.saveEntry(new CartEntry(
+        CartEntry cartEntry = cartEntryRepository.save(new CartEntry(
                 cart,
                 product,
                 2L
         ));
 
         cartEntry.setRelationsInCartAndProductJoinTables();
-        cartDbService.updateCart(cart);
-        productDbService.saveProduct(product);
+        cartRepository.save(cart);
+        productRepository.save(product);
 
         //When
         long productId = product.getId();
@@ -207,9 +203,16 @@ public class ProductRepositoryTestSuite {
         long cartAssignedToCartEntryId = entryExtractedBeforeProductDelete.get().getCart().getId();
         long productAssignedToCartEntryId = entryExtractedBeforeProductDelete.get().getProduct().getId();
 
-        productDbService.deleteProduct(productId);
+        List<CartEntry> entries = new ArrayList<>(productExtractedBeforeProductDelete.get().getCartEntriesWhichContainsThisEntry());
+        for (CartEntry iterationEntry : entries) {
+            iterationEntry.removeRelationsFromCartAndProductTables();
+            cartEntryRepository.save(iterationEntry);
+            cartEntryRepository.deleteById(iterationEntry.getId());
+        }
 
-        Optional<Group> groupExtractedAfterProductDelete = groupDbService.getGroup(group.getId());
+        productRepository.deleteById(productId);
+
+        Optional<Group> groupExtractedAfterProductDelete = groupRepository.findById(group.getId());
         Optional<Product> productExtractedAfterProductDelete = productRepository.findById(productId);
         Optional<CartEntry> entryExtractedAfterProductDelete = cartEntryRepository.findById(cartEntry.getId());
         Optional<Cart> cartExtractedAfterProductDelete = cartRepository.findById(cart.getId());
@@ -227,8 +230,8 @@ public class ProductRepositoryTestSuite {
 
         //CleanUp
         try {
-            cartDbService.deleteCart(cartId);
-            groupDbService.deleteGroup(groupDbService.getGroup(group.getId()).get());
+            cartRepository.deleteById(cartId);
+            groupRepository.delete(groupRepository.findById(group.getId()).get());
         } catch (Exception e) {
             System.out.println(e);
         }

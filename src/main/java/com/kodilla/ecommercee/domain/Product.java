@@ -13,6 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "PRODUCTS")
