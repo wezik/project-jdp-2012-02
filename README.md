@@ -19,6 +19,8 @@ loremipsum
 </details>
 
 <details><summary>Product</summary>
+  
+***
 
 **GET** http://endpoint/v1/loremipsum
 
@@ -84,10 +86,14 @@ loremipsum
 **DELETE** http://endpoint/v1/loremipsum
 
 *description*
+
+***
 
 </details>
 
 <details><summary>Group</summary>
+  
+  ***
 
 **GET** http://endpoint/v1/loremipsum
 
@@ -153,11 +159,15 @@ loremipsum
 **DELETE** http://endpoint/v1/loremipsum
 
 *description*
+
+***
 
 </details>
 
 
 <details><summary>Cart</summary>
+  
+  ***
 
 **GET** http://endpoint/v1/loremipsum
 
@@ -223,10 +233,14 @@ loremipsum
 **DELETE** http://endpoint/v1/loremipsum
 
 *description*
+
+***
 
 </details>
 
 <details><summary>Order</summary>
+  
+  ***
 
 **GET** http://endpoint/v1/loremipsum
 
@@ -292,10 +306,14 @@ loremipsum
 **DELETE** http://endpoint/v1/loremipsum
 
 *description*
+
+***
 
 </details>
 
 <details><summary>User</summary>
+  
+  ***
 
 **GET** http://endpoint/v1/loremipsum
 
@@ -361,6 +379,8 @@ loremipsum
 **DELETE** http://endpoint/v1/loremipsum
 
 *description*
+
+***
 
 </details>
 
