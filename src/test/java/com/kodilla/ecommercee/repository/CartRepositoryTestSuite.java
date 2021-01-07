@@ -63,7 +63,7 @@ public class CartRepositoryTestSuite {
     }
 
     @Test
-    public void testRelationsBeforeAndAfterDeleteCart() {
+    public void testRelationsBeforeDeleteCart() {
         //Given
         Cart cart = cartRepository.save(new Cart());
 
@@ -88,30 +88,60 @@ public class CartRepositoryTestSuite {
         productRepository.save(product);
 
         //When
-        Long cartId = cart.getId();
-        Long groupId = group.getId();
-        Long productId = product.getId();
-        Long cartEntryId = cartEntry.getId();
-
-        Optional<Cart> cartExtractedBeforeCartDelete = cartRepository.findById(cartId);
-        Optional<CartEntry> cartEntryExtractedBeforeCartDelete = cartEntryRepository.findById(cartEntryId);
-
-        cartEntryExtractedBeforeCartDelete.get().removeRelationsFromCartAndProductTables();
-        productRepository.save(cartEntryExtractedBeforeCartDelete.get().getProduct());
-        cartRepository.deleteById(cartId);
-
-        Optional<Cart> cartExtractedAfterCartDelete = cartRepository.findById(cartId);
-        Optional<CartEntry> cartEntryExtractedAfterCartDelete = cartEntryRepository.findById(cartEntryId);
-        Optional<Product> productExtractedAfterCartDelete = productRepository.findById(productId);
-        Optional<Group> groupExtractedAfterCartDelete = groupRepository.findById(groupId);
+        Optional<Cart> extractedCart = cartRepository.findById(cart.getId());
+        Long cartEntryAssignedToCartId = extractedCart.get().getCartEntryList().get(0).getId();
+        Optional<Product> extractedProduct = productRepository.findById(product.getId());
+        Optional<CartEntry> extractedCartEntry = cartEntryRepository.findById(cartEntry.getId());
 
         //Then
-        assertEquals(cartEntryId, cartExtractedBeforeCartDelete.get().getCartEntryList().get(0).getId());
-        assertEquals(cartId, cartEntryExtractedBeforeCartDelete.get().getCart().getId());
-        assertFalse(cartEntryExtractedAfterCartDelete.isPresent());
-        assertFalse(cartExtractedAfterCartDelete.isPresent());
-        assertTrue(productExtractedAfterCartDelete.isPresent());
-        assertTrue(groupExtractedAfterCartDelete.isPresent());
+        assertEquals(cartEntryAssignedToCartId, cartEntry.getId());
+
+        //CleanUp
+        extractedCartEntry.get().removeRelationsFromCartAndProductTables();
+        cartEntryRepository.save(extractedCartEntry.get());
+        cartEntryRepository.deleteAll();
+        productRepository.deleteAll();
+        cartRepository.deleteAll();
+        groupRepository.deleteAll();
+
+    }
+
+    @Test
+    public void testRelationsAfterDeleteCart() {
+        //Given
+        Cart cart = cartRepository.save(new Cart());
+
+        Group group = groupRepository.save(new Group("RTV"));
+
+        Product product = productRepository.save(new Product(
+                "TV",
+                "65 inches",
+                new BigDecimal(3000),
+                group));
+
+        group.getProductList().add(product);
+        groupRepository.save(group);
+
+        CartEntry cartEntry = cartEntryRepository.save(new CartEntry(
+                cart,
+                product,
+                2L
+        ));
+        cartEntry.setRelationsInCartAndProductJoinTables();
+        cartRepository.save(cart);
+        productRepository.save(product);
+
+        //When
+        Optional<CartEntry> cartEntryExtractedBeforeCartDelete = cartEntryRepository.findById(cartEntry.getId());
+        cartEntryExtractedBeforeCartDelete.get().removeRelationsFromCartAndProductTables();
+        productRepository.save(cartEntryExtractedBeforeCartDelete.get().getProduct());
+        cartRepository.deleteById(cart.getId());
+
+        //Then
+        assertFalse(cartEntryRepository.findById(cartEntry.getId()).isPresent());
+        assertFalse(cartRepository.findById(cart.getId()).isPresent());
+        assertTrue(productRepository.findById(product.getId()).isPresent());
+        assertTrue(groupRepository.findById(group.getId()).isPresent());
 
         //CleanUp
         productRepository.deleteAll();
