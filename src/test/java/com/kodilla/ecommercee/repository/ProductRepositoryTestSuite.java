@@ -1,8 +1,6 @@
 package com.kodilla.ecommercee.repository;
 
 import com.kodilla.ecommercee.domain.*;
-import com.kodilla.ecommercee.dto.ProductDto;
-import com.kodilla.ecommercee.service.*;
 import lombok.AccessLevel;
 import lombok.experimental.FieldDefaults;
 import org.junit.Test;
@@ -12,7 +10,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -78,7 +75,7 @@ public class ProductRepositoryTestSuite {
 
         //WHen
         long productId = product.getId();
-        Optional<Product> extracted= productRepository.findById(productId);
+        Optional<Product> extracted = productRepository.findById(productId);
 
         //Then
         assertTrue(extracted.isPresent());
@@ -140,12 +137,12 @@ public class ProductRepositoryTestSuite {
 
         //When
         Product updatedProduct = productRepository.save(new Product(
-                product.getId(),
-                "TV updated",
-                "Desc updated",
-                new BigDecimal(3500),
-                groupRepository.findById(group.getId()).get(),
-                product.getCartEntriesWhichContainsThisEntry()
+                        product.getId(),
+                        "TV updated",
+                        "Desc updated",
+                        new BigDecimal(3500),
+                        groupRepository.findById(group.getId()).get(),
+                        product.getCartEntriesWhichContainsThisEntry()
                 )
         );
 
@@ -164,7 +161,7 @@ public class ProductRepositoryTestSuite {
     }
 
     @Test
-    public void testDbRelationsBeforeAndAfterDeleteProduct() {
+    public void testDbRelationsBeforeDeleteProduct() {
         //Given
         Group group = groupRepository.save(new Group("RTV"));
 
@@ -189,51 +186,66 @@ public class ProductRepositoryTestSuite {
         productRepository.save(product);
 
         //When
-        long productId = product.getId();
-        long cartId = cart.getId();
-        long cartEntryId = cartEntry.getId();
-
-        Optional<Product> productExtractedBeforeProductDelete = productRepository.findById(productId);
-        long cartEntryAssignedToProductId = productExtractedBeforeProductDelete.get().getCartEntriesWhichContainsThisEntry().get(0).getId();
-
-        Optional<Cart> cartExtractedBeforeProductDelete = cartRepository.findById(cart.getId());
-        long cartEntryAssignedToCartId = cartExtractedBeforeProductDelete.get().getCartEntryList().get(0).getId();
-
-        Optional<CartEntry> entryExtractedBeforeProductDelete = cartEntryRepository.findById(cartEntry.getId());
-        long cartAssignedToCartEntryId = entryExtractedBeforeProductDelete.get().getCart().getId();
-        long productAssignedToCartEntryId = entryExtractedBeforeProductDelete.get().getProduct().getId();
-
-        List<CartEntry> entries = new ArrayList<>(productExtractedBeforeProductDelete.get().getCartEntriesWhichContainsThisEntry());
-        for (CartEntry iterationEntry : entries) {
-            iterationEntry.removeRelationsFromCartAndProductTables();
-            cartEntryRepository.save(iterationEntry);
-            cartEntryRepository.deleteById(iterationEntry.getId());
-        }
-
-        productRepository.deleteById(productId);
-
-        Optional<Group> groupExtractedAfterProductDelete = groupRepository.findById(group.getId());
-        Optional<Product> productExtractedAfterProductDelete = productRepository.findById(productId);
-        Optional<CartEntry> entryExtractedAfterProductDelete = cartEntryRepository.findById(cartEntry.getId());
-        Optional<Cart> cartExtractedAfterProductDelete = cartRepository.findById(cart.getId());
+        Optional<Group> extractedGroup = groupRepository.findById(group.getId());
+        Long productAssignedToGroup = extractedGroup.get().getProductList().get(0).getId();
+        Optional<CartEntry> extractedEntry = cartEntryRepository.findById(cartEntry.getId());
+        Long productAssignedToCartEntry = extractedEntry.get().getProduct().getId();
+        Optional<Cart> extractedCart = cartRepository.findById(cart.getId());
 
         //Then
-        assertEquals(cartEntryAssignedToProductId, cartEntryId);
-        assertEquals(cartEntryAssignedToCartId, cartEntryId);
-        assertEquals(cartAssignedToCartEntryId, cartId);
-        assertEquals(productAssignedToCartEntryId, productId);
-        assertTrue(cartExtractedAfterProductDelete.isPresent());
-        assertTrue(groupExtractedAfterProductDelete.isPresent());
-        assertEquals(0, cartExtractedAfterProductDelete.get().getCartEntryList().size());
-        assertFalse(productExtractedAfterProductDelete.isPresent());
-        assertFalse(entryExtractedAfterProductDelete.isPresent());
+        assertEquals(productAssignedToGroup, product.getId());
+        assertEquals(productAssignedToCartEntry, product.getId());
 
         //CleanUp
-        try {
-            cartRepository.deleteById(cartId);
-            groupRepository.delete(groupRepository.findById(group.getId()).get());
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        extractedCart.get().getCartEntryList().clear();
+        cartRepository.save(extractedCart.get());
+        productRepository.deleteAll();
+        cartRepository.deleteAll();
+        groupRepository.deleteAll();
+
+    }
+
+    @Test
+    public void testDbRelationsAfterDeleteProduct() {
+        //Given
+        Group group = groupRepository.save(new Group("RTV"));
+
+        Product product = productRepository.save(new Product(
+                "TV",
+                "65 inches",
+                new BigDecimal(3000),
+                group));
+        group.getProductList().add(product);
+        groupRepository.save(group);
+
+        Cart cart = cartRepository.save(new Cart());
+
+        CartEntry cartEntry = cartEntryRepository.save(new CartEntry(
+                cart,
+                product,
+                2L
+        ));
+
+        cartEntry.setRelationsInCartAndProductJoinTables();
+        cartRepository.save(cart);
+        productRepository.save(product);
+
+        //When
+
+        CartEntry entry = cartEntryRepository.findById(cartEntry.getId()).get();
+        entry.removeRelationsFromCartAndProductTables();
+        cartRepository.save(entry.getCart());
+        productRepository.deleteById(product.getId());
+
+        //Then
+        assertTrue(cartRepository.findById(cart.getId()).isPresent());
+        assertTrue(groupRepository.findById(group.getId()).isPresent());
+        assertEquals(0, cartRepository.findById(cart.getId()).get().getCartEntryList().size());
+        assertFalse(productRepository.findById(product.getId()).isPresent());
+
+        //CleanUp
+        cartRepository.deleteAll();
+        groupRepository.deleteAll();
+
     }
 }

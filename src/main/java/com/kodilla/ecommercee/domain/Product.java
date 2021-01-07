@@ -47,7 +47,7 @@ public class Product {
     Group group;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "PRODUCT_JOIN_CARTENTRIES",
             joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")},
