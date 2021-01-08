@@ -20,7 +20,6 @@ public class Product {
 
     @Id
     @NotNull
-    @NonNull
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "ID", unique = true)
     Long id;

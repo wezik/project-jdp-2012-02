@@ -10,6 +10,7 @@ import java.util.List;
 
 @Getter
 @RequiredArgsConstructor
+@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "GROUPS_LIST")

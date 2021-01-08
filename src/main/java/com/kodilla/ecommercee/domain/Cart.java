@@ -11,7 +11,6 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
-@AllArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "CARTS")
 public class Cart {
@@ -21,15 +20,14 @@ public class Cart {
     @Column(name = "ID", unique = true)
     Long id;
 
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    @OneToMany
-//    @JoinTable(
-//            name = "CARTS_JOIN_CARTENTRIES",
-//            joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "ID")},
-//            inverseJoinColumns = {@JoinColumn(name = "CART_ENTRY_ID", referencedColumnName = "ID")}
-//    )
-    @OneToMany(mappedBy = "cart")
-    List<CartEntry> productList = new ArrayList<>();
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinTable(
+            name = "CARTS_JOIN_CARTENTRIES",
+            joinColumns = {@JoinColumn(name = "CART_ID", referencedColumnName = "ID")},
+            inverseJoinColumns = {@JoinColumn(name = "CART_ENTRY_ID", referencedColumnName = "ID")}
+    )
+    List<CartEntry> cartEntryList = new ArrayList<>();
 
     public Cart(Long id) {
         this.id = id;

@@ -1,17 +1,17 @@
 package com.kodilla.ecommercee.service;
 
+import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.Product;
+import com.kodilla.ecommercee.dto.ProductDto;
+import com.kodilla.ecommercee.exceptions.GroupNotFoundException;
 import com.kodilla.ecommercee.exceptions.ProductNotFoundException;
 import com.kodilla.ecommercee.repository.ProductRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @FieldDefaults(level = AccessLevel.PRIVATE)
@@ -19,6 +19,7 @@ import java.util.Optional;
 public class ProductDbService {
 
     final ProductRepository repository;
+    final GroupDbService groupDbService;
 
     public List<Product> getProducts() {
         return repository.findAll();
@@ -30,6 +31,17 @@ public class ProductDbService {
 
     public Product saveProduct(Product product) {
         return repository.save(product);
+    }
+
+    public Product updateProduct(ProductDto productDto) {
+        Group group = groupDbService.getGroup(productDto.getGroupId()).orElseThrow(GroupNotFoundException::new);
+        Product product = getProduct(productDto.getId());
+        product.setName(productDto.getName());
+        product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
+        product.setGroup(group);
+        saveProduct(product);
+        return product;
     }
 
     public void deleteProduct(Long productId) {

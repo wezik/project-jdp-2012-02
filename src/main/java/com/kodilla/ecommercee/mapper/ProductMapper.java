@@ -40,7 +40,6 @@ public class ProductMapper {
         Optional<Group> assignedGroup = groupDbService.getGroup(productDto.getGroupId());
 
         return new Product(
-                productDto.getId(),
                 productDto.getName(),
                 productDto.getDescription(),
                 productDto.getPrice(),

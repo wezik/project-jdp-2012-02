@@ -23,7 +23,7 @@ public class CartMapper {
     public CartDto mapToCartDto(final Cart cart) {
         return new CartDto(
                 cart.getId(),
-                cartEntryMapper.mapToCartEntryDtoList(cart.getProductList())
+                cartEntryMapper.mapToCartEntryDtoList(cart.getCartEntryList())
         );
     }
 
