@@ -29,7 +29,7 @@ public class ProductController {
     }
 
     @GetMapping(value = "getProduct/{productId}")
-    public ProductDto getProduct(@PathVariable Long productId) throws ProductNotFoundException {
+    public ProductDto getProduct(@PathVariable Long productId) {
         return mapper.mapToProductDto(service.getProduct(productId));
     }
 

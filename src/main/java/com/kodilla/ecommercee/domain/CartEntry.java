@@ -14,7 +14,7 @@ import javax.validation.constraints.NotNull;
 public class CartEntry {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @NotNull
     @Column(name = "ID")
     Long id;
