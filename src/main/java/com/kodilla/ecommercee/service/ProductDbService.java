@@ -1,5 +1,6 @@
 package com.kodilla.ecommercee.service;
 
+import com.kodilla.ecommercee.domain.CartEntry;
 import com.kodilla.ecommercee.domain.Group;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.ProductDto;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -20,6 +22,7 @@ public class ProductDbService {
 
     final ProductRepository repository;
     final GroupDbService groupDbService;
+    final CartEntryDbService cartEntryDbService;
 
     public List<Product> getProducts() {
         return repository.findAll();
@@ -45,6 +48,13 @@ public class ProductDbService {
     }
 
     public void deleteProduct(Long productId) {
+        Product extracted = getProduct(productId);
+        List<CartEntry> entries = new ArrayList<>(extracted.getCartEntriesWhichContainsThisEntry());
+        for (CartEntry iterationEntry : entries) {
+            iterationEntry.removeRelationsFromCartAndProductTables();
+            cartEntryDbService.saveEntry(iterationEntry);
+            cartEntryDbService.deleteEntry(iterationEntry.getId());
+        }
         repository.deleteById(productId);
     }
 

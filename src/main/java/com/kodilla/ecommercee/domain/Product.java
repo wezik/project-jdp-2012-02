@@ -13,6 +13,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @Entity(name = "PRODUCTS")
@@ -46,13 +47,12 @@ public class Product {
     Group group;
 
     @LazyCollection(LazyCollectionOption.FALSE)
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinTable(
             name = "PRODUCT_JOIN_CARTENTRIES",
             joinColumns = {@JoinColumn(name = "PRODUCT_ID", referencedColumnName = "ID")},
             inverseJoinColumns = {@JoinColumn(name = "CART_ENTRY_ID", referencedColumnName = "ID")}
     )
     List<CartEntry> cartEntriesWhichContainsThisEntry = new ArrayList<>();
-
 }
 
