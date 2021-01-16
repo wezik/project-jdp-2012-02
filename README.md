@@ -163,72 +163,106 @@ The only difference is that You must put product ID (got from database) at the f
 
 <details><summary>Group</summary>
   
-  ***
+***
 
-**GET** http://endpoint/v1/loremipsum
+**1. GET TARGET GROUP**
 
-*description*
+**GET** http://yourDeploymentAdress/v1/group/getGroup/{groupId}
 
-<details><summary>Body</summary>
+*This endpoint requires one argument - value of group ID in shop's database<br>*
+*Example: http://yourDeploymentAdress/v1/group/getGroup/12*
+*<br>Returns JSON data with group details:*
+
+<details><summary>Example response</summary>
 
 ```
 {
-
-
+    "groupId": "12",
+    "groupName": "Electronics"
 }
 ```
 
 </details>
 
-**GET** http://endpoint/v1/loremipsum
+**2. GET ALL GROUPS**
 
-*description*
+**GET** http://yourDeploymentAdress/v1/group/getGroups
 
-<details><summary>Body</summary>
+*This endpoint requires no arguments or body.<br> Returns list of all groups, which are saved in shop's database.*
+
+<details><summary>Example response</summary>
+
+```
+[
+    {
+        "groupId": "12",
+        "groupName": "Electronics"
+    },
+    {
+        "groupId": "13",
+        "groupName": "Furnitures"
+    },
+]
+```
+
+</details>
+
+**3. ADD A NEW GROUP TO SHOP'S DATABASE**
+
+**POST** http://yourDeploymentAdress/v1/group/addGroup
+
+*This endpoint requires specific body in correct order:<br><br>groupName<br>*
+
+<details><summary>Example body</summary>
 
 ```
 {
-
-
+    "groupName": "Electronics"
 }
 ```
 
 </details>
 
-**PUT** http://endpoint/v1/loremipsum
-
-*description*
-
-<details><summary>Body</summary>
+<details><summary>Example response</summary>
 
 ```
 {
-
-
+    "groupId": 16,
+    "groupName": "Electronics"
 }
 ```
 
 </details>
 
-**POST** http://endpoint/v1/loremipsum
+**4. UPDATE GROUP IN SHOP'S DATABASE**
 
-*description*
+**PUT** http://yourDeploymentAdress/v1/group/updateGroup
 
-<details><summary>Body</summary>
+*This endpoint requires specific body in correct order:<br><br>groupId<br>groupName*
+
+<details><summary>Example body</summary>
 
 ```
 {
-
-
+    "groupId": 16,
+    "groupName": "Electronics"
 }
 ```
 
 </details>
 
+*In response You will get JSON data with updated group details.*
 
-**DELETE** http://endpoint/v1/loremipsum
+<details><summary>Example response</summary>
 
-*description*
+```
+{
+    "groupId": 16,
+    "groupName": "Electronics"
+}
+```
+
+</details>
 
 ***
 
