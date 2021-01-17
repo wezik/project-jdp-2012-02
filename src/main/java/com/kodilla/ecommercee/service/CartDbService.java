@@ -5,6 +5,7 @@ import com.kodilla.ecommercee.domain.CartEntry;
 import com.kodilla.ecommercee.domain.Order;
 import com.kodilla.ecommercee.domain.Product;
 import com.kodilla.ecommercee.dto.AddCartEntryDto;
+import com.kodilla.ecommercee.exceptions.CartNotFoundException;
 import com.kodilla.ecommercee.repository.CartRepository;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
@@ -22,8 +23,8 @@ public class CartDbService {
     final CartEntryDbService cartEntryDbService;
     final ProductDbService productDbService;
 
-    public Cart getCart(Long cartId) {
-        return repository.findById(cartId).get();
+    public Cart getCart(Long cartId) throws CartNotFoundException {
+        return repository.findById(cartId).orElseThrow(CartNotFoundException::new);
     }
 
     public Cart createCart() {
