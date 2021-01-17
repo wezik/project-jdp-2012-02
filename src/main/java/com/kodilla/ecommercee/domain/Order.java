@@ -39,10 +39,17 @@ public class Order {
     private String shippingAddress;
 
     @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @JoinColumn(name = "user_id")
     private User user;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "cart_id", nullable = false , referencedColumnName = "ID")
+    @JoinColumn(name = "cart_id", referencedColumnName = "ID")
     private Cart cart;
+
+    public Order(@NotNull Double value, @NotNull String status, @NotNull LocalDateTime dateTime, @NotNull String shippingAddress) {
+        this.value = value;
+        this.status = status;
+        this.dateTime = dateTime;
+        this.shippingAddress = shippingAddress;
+    }
 }
