@@ -468,70 +468,135 @@ It returns JSON data with list of cart entries, which belongs to target cart.<br
   
   ***
 
-**GET** http://endpoint/v1/loremipsum
+**1. GET ALL USER**
 
-*description*
+**GET** http://yourDeploymentAdress/v1/user/getUsers
+
+*This endpoint requires no arguments or body.<br> Returns list of all users, which are saved in shop's database.*
+
+<details><summary>Body</summary>
+
+```
+[
+    {
+        "id": 1,
+        "username": "Piotr",
+        "status": "1",
+        "userKey": 59403
+    },
+    {
+        "id": 2,
+        "username": "Admin",
+        "status": "1",
+        "userKey": 96997
+    },
+    {
+        "id": 3,
+        "username": "User",
+        "status": "0",
+        "userKey": 31251
+    }
+]
+```
+
+</details>
+
+**2. GET USER BY ID**
+
+**GET** http://yourDeploymentAdress/v1/user/getUser/{id}
+
+*This endpoint requires one argument - value of user ID in shop's database<br>*
+*Example: http://yourDeploymentAdress/v1/user/getUser/3*
+*<br>Returns JSON data with user details:*
 
 <details><summary>Body</summary>
 
 ```
 {
-
-
+    "id": 3,
+    "username": "User",
+    "status": "0",
+    "userKey": 31251
 }
 ```
 
 </details>
 
-**GET** http://endpoint/v1/loremipsum
+**3. UPDATE PRODUCT IN SHOP'S DATABASE**
 
-*description*
+**PUT** http://yourDeploymentAdress/v1/user/updateUser
+
+*This endpoint requires specific body, almost the same as ```createUser```<br>
+The only difference is that You must put user ID (got from database) at the first place.*
+
+<details><summary>Example body</summary>
+
+```
+{
+    "id": 2,
+    "username": "Admin - update",
+    "status": "1",
+    "userKey": 96997
+}
+```
+
+</details>
+
+*In response You will get JSON data with updated user details.*
+
+<details><summary>Example response</summary>
+
+```
+{
+    "id": 2,
+    "username": "Admin - update",
+    "status": "1",
+    "userKey": 96997
+}
+```
+
+</details>
+
+**4. ADD A NEW USER TO SHOP'S DATABASE**
+
+**POST** http://yourDeploymentAdress/v1/user/createUser
+
+*This endpoint requires specific body in correct order:<br><br>username<br>status<br>userKey*
+
+<details><summary>Example body</summary>
+
+```
+{
+    "username": "User",
+    "status": "0",
+    "userKey": 31251
+}
+```
+
+</details>
+
+*ID for this new user in the database is assign automatically.*
 
 <details><summary>Body</summary>
 
 ```
 {
-
-
+    "id": 3,
+    "username": "User",
+    "status": "0",
+    "userKey": 31251
 }
 ```
 
 </details>
 
-**PUT** http://endpoint/v1/loremipsum
+**5. DELETE USER FROM SHOP'S DATABASE**
 
-*description*
+**DELETE** http://yourDeploymentAdress/v1/user/deleteUser/{id}
 
-<details><summary>Body</summary>
-
-```
-{
-
-
-}
-```
-
-</details>
-
-**POST** http://endpoint/v1/loremipsum
-
-*description*
-
-<details><summary>Body</summary>
-
-```
-{
-
-
-}
-```
-
-</details>
-
-
-**DELETE** http://endpoint/v1/loremipsum
-
-*description*
+*This endpoint requires one argument - value of user ID, which You want to remove from shop's database.<br>*
+*Example: http://yourDeploymentAdress/v1/user/deleteUser/1*
+*<br>It doesn't return anything.*
 
 ***
 
