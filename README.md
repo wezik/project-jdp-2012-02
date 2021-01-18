@@ -1,24 +1,18 @@
-# Project title
+# Ecommerce Restful API
 
-## Project description
+## Description
 
 This project is our team effort at creating a backend ecommerce service.
 
-### Demo
-
-![image](https://i.picsum.photos/id/442/320/240.jpg?hmac=4y_QlV8sLOjsyHRdQ9u581BmUWjL7o6PHmI_yeWa-Ck) ![image](https://i.picsum.photos/id/442/320/240.jpg?hmac=4y_QlV8sLOjsyHRdQ9u581BmUWjL7o6PHmI_yeWa-Ck)
-
 ## Requirements
+
+Java 8
 
 ## How to build
 
+Use `/gradlew build` in terminal
+
 ## Endpoints
-
-<details><summary>Overview</summary>
-
-loremipsum
-
-</details>
 
 <details><summary>Product</summary>
   
@@ -536,8 +530,6 @@ It returns JSON data with list of cart entries, which belongs to target cart.<br
 ***
 
 </details>
-
-## Project Usage
 
 ## Troubleshooting
 _Common problems and how to solve them_
