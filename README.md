@@ -1,24 +1,20 @@
-# Project title
+# Ecommerce Rest API
 
 ## Project description
 
 This project is our team effort at creating a backend ecommerce service.
 
-### Demo
-
-![image](https://i.picsum.photos/id/442/320/240.jpg?hmac=4y_QlV8sLOjsyHRdQ9u581BmUWjL7o6PHmI_yeWa-Ck) ![image](https://i.picsum.photos/id/442/320/240.jpg?hmac=4y_QlV8sLOjsyHRdQ9u581BmUWjL7o6PHmI_yeWa-Ck)
-
 ## Requirements
+
+- Java 8
 
 ## How to build
 
+- Setup your database in [application.properties](https://github.com/wezik/project-jdp-2012-02/blob/master/src/main/resources/application.properties#L1-L3)
+- Build gradle using `gradlew build`
+- Run the project
+
 ## Endpoints
-
-<details><summary>Overview</summary>
-
-loremipsum
-
-</details>
 
 <details><summary>Product</summary>
   
@@ -601,8 +597,3 @@ The only difference is that You must put user ID (got from database) at the firs
 ***
 
 </details>
-
-## Project Usage
-
-## Troubleshooting
-_Common problems and how to solve them_
